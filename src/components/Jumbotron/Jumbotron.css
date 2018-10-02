@@ -1,0 +1,13 @@
+.jumbotron {
+    background-color: white;
+}
+h1 {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+.thin {
+    font-weight: 200;
+}
+.bold {
+    font-weight: 700;
+}
