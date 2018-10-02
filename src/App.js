@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Container from './Container';
+import Column from './Column';
+import Row from './Row';
+import Jumbotron from './components/Jumbotron';
 import './App.css';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        <Jumbotron><span className="thin">menu</span><span className="bold">NOW</span></Jumbotron>
+        <Container>
+        <Row>
+          <Column size="md-6" className="d-flex justify-content-middle">
+            <p>CONTENT LEFT</p>
+          </Column>
+          <Column size="md-6">
+            <p>CONTENT RIGHT</p>
+          </Column>
+        </Row>
+      </Container>
       </div>
     );
   }
