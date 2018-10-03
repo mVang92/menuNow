@@ -17,8 +17,7 @@ app.use(routes);
 
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
-//name of our database is menuNow
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/menuNow");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/nytreact");
 
 
 // Start the API server
