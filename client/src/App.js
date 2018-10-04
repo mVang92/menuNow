@@ -4,10 +4,8 @@ import Container from './Container';
 import Row from './Row';
 import Column from './Column';
 import API from './utils/API';
-import Article from './components/Article';
+import { Menu } from './components/Menu';
 import { Input, FormBtn } from "./components/Form";
-import DeleteBtn from './components/DeleteBtn';
-import SavedArticle from './components/SavedArticles';
 
 export default class App extends Component {
   state = {
@@ -15,8 +13,7 @@ export default class App extends Component {
     loggedin: String,
     menus: [],
     submenus: [],
-    items: [],
-    savedArticles: []
+    items: []
   };
 
   componentWillMount() {
@@ -24,9 +21,9 @@ export default class App extends Component {
   };
 
   loadMenus = () => {
-    API.getArticles()
+    API.getMenus()
       .then(res => {
-        this.setState({ savedArticles: res.data });
+        this.setState({ menus: res.data });
       })
       .catch(err => console.log(err));
   };
@@ -72,6 +69,7 @@ export default class App extends Component {
         <Container>
           <Row>
             {/* Login Buttons along top right of page */}
+            
             <div>
 
             </div>
@@ -80,51 +78,14 @@ export default class App extends Component {
               <h3 className="heading">Active Menu Goes Here</h3>
               {/* Add a menu component for the active menu */}
 
-              {/* <div style={{ paddingTop: 50 }}>
-                {this.state.articles.map((article, i) => {
-                  return (
-                    <div>
-                      <Article
-                        id={i}
-                        key={article._id}
-                        url={article.web_url}
-                        headline={article.headline.main}
-                        snippet={article.snippet}
-                        byline={(article.byline ? article.byline.original : 'No author documented')}
-                        save={<FormBtn id={article._id} onClick={this.saveArticle}>Save Article</FormBtn>}
-                        textArea={<textarea onChange={this.handleChange} name="note" className="form-control" rows="3"></textarea>}
-                      />
-                    </div>
-                  )
-                })}
-              </div> */}
             </Column>
             <Column size="6">
               <h3 className="heading">Removed Menu Goes Here</h3>
               {/* Add a Menu Component for the removed menu */}
 
-              {/* {this.state.savedArticles.length ? (
-                <div>
-                  {this.state.savedArticles.map((savedArticle, i) => {
-                    return (
-                      <SavedArticle
-                        key={i}
-                        href={savedArticle.url}
-                        headline={savedArticle.headline}
-                        snippet={savedArticle.snippet}
-                        byline={savedArticle.author}
-                        btn={<DeleteBtn id={savedArticle._id} onClick={this.deleteArticle} />}
-                        id={savedArticle._id}
-                        note={savedArticle.note}
-                        date={savedArticle.date}
-                      />
-                    )
-                  })}
-                </div>
-              ) : (
-                  <h3 className="text-center">No Saved Articles</h3>
-                )} */}
             </Column>
+            {/* Else statement for state.loggedin goes here */}
+
           </Row>
         </Container>
       </div>
