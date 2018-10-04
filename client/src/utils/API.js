@@ -7,11 +7,13 @@ export default {
     const url = `${BASEURL}${q}+${query.start}+${query.end}`
     return axios.get(url);
   },
-  getArticles: () => { 
+
+  getMenus: () => { 
     return (
       axios.get('/api/articles')
     ) 
   },
+
   save: data => {
     return (
       console.log('data', data.headline),
@@ -28,6 +30,7 @@ export default {
       })
     )
   },
+
   delete: id => {
     return (
       axios.delete(`/api/articles/${id}`)
