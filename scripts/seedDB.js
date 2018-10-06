@@ -29,12 +29,12 @@ const menuSeed = [
 ];
 
 // if it doesnt work, use db.Menu
- db.User.collection.insertMany(menuSeed)
-  .then(data => {
-    console.log(data.result.n + " records inserted!");
-    process.exit(0);
-  })
+ db.Menu.collection.insertMany(menuSeed)
+  // .then(data => {
+  //   console.log(data.result.n + " records inserted!");
+  //   process.exit(0);
+  // })
   .catch(err => {
     console.error(err);
-    process.exit(1);
+    // process.exit(1);
   });
