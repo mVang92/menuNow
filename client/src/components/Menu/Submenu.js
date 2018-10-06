@@ -1,7 +1,7 @@
 import React from 'react';
 import Row from './../../Row';
 import Column from './../../Column';
-import { Item } from '../Menu';
+import Item from './Item';
 
 const Submenu = props => {
     return (
@@ -26,4 +26,5 @@ const Submenu = props => {
         </Row>
     );
 };
+
 export default Submenu;
