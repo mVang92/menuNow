@@ -4,19 +4,19 @@ import Container from './Container';
 import Row from './Row';
 import Column from './Column';
 import API from './utils/API';
-import Article from './components/Article';
+import Menu from './components/Menu';
 import { Input, FormBtn } from "./components/Form";
 import DeleteBtn from './components/DeleteBtn';
 import SavedArticle from './components/SavedArticles';
 
 export default class App extends Component {
   state = {
-    message: "Search for Articles!",
+    message: "Search for Menus!",
     loggedin: String,
     menus: [],
     submenus: [],
     items: [],
-    savedArticles: []
+    savedMenus: []
   };
 
   componentWillMount() {
@@ -24,9 +24,10 @@ export default class App extends Component {
   };
 
   loadMenus = () => {
-    API.getArticles()
+    // changed names of methods from articles to Menus
+    API.getMenus()
       .then(res => {
-        this.setState({ savedArticles: res.data });
+        this.setState({ savedMenus: res.data });
       })
       .catch(err => console.log(err));
   };
