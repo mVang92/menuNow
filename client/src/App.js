@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Nav from './components/Nav';
 import Jumbotron from './components/Jumbotron';
 import Container from './Container';
 import Row from './Row';
@@ -65,7 +66,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <Jumbotron>MenuNOW</Jumbotron>
+        <Nav/>
         <Container>
           <Row>
             {/* Login Buttons along top right of page */}
