@@ -8,6 +8,8 @@ const Menu = props => {
     return (
         // Add some styles to this row through classes potentially
         <Row>
+
+            {/* Only load this if the user is logged in */}
             <Column size="12">
 
                 {/* This Row is The Menu header: Active/Inactive*/}
@@ -26,12 +28,9 @@ const Menu = props => {
                         />
 
                 </Row>
-
-
             </Column>
 
-
-
+            {/* This row will fill instead for any users that aren't logged in */}
             <Column size="12">
 
             </Column>
