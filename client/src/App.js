@@ -5,7 +5,7 @@ import Container from './Container';
 import Row from './Row';
 import Column from './Column';
 import API from './utils/API';
-import { Menu } from './components/Menu';
+import Menu from './components/Menu/Menu';
 import { Input, FormBtn } from "./components/Form";
 
 export default class App extends Component {
@@ -66,7 +66,9 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <Nav/>
+        <Nav
+          loggedin={this.loggedin}
+          />
         <Container>
           <Row>
             {/* Login Buttons along top right of page */}
