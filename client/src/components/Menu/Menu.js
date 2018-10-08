@@ -24,8 +24,8 @@ const Menu = props => {
                 {/* This Row will fill with the submenu. */}
                 <Row>
                     <Submenu
-                        // pass in submenu title and submenu items as props
-                        />
+                    // pass in submenu title and submenu items as props
+                    />
 
                 </Row>
             </Column>

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+
 import Nav from './components/Nav';
 import Jumbotron from './components/Jumbotron';
 import Container from './Container';
 import Row from './Row';
 import Column from './Column';
 import API from './utils/API';
+import ModalConductor from "./components/Modal/Modalconductor";
 import Menu from './components/Menu/Menu';
 import { Input, FormBtn } from "./components/Form";
 
@@ -14,7 +16,8 @@ export default class App extends Component {
     loggedin: String,
     menus: [],
     submenus: [],
-    items: []
+    items: [],
+    currentModal: String
   };
 
   componentWillMount() {
@@ -34,6 +37,13 @@ export default class App extends Component {
     this.setState({
       [name]: value,
       message: ""
+    });
+  };
+
+  menuClick = event => {
+    const name = event.target
+    this.setState({
+      currentModal: name
     });
   };
 
@@ -68,6 +78,7 @@ export default class App extends Component {
       <div>
         <Nav
           loggedin={this.loggedin}
+          menuClick={this.menuClick}
           />
         <Container>
           <Row>
@@ -88,9 +99,12 @@ export default class App extends Component {
 
             </Column>
             {/* Else statement for state.loggedin goes here */}
-
           </Row>
+          <ModalConductor
+            currentModal={this.state.currentModal}
+          />
         </Container>
+        
       </div>
     );
   };
