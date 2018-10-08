@@ -22,6 +22,12 @@ const Submenu = props => {
                 .... etc...
 
             */}
+
+                <Item
+                name="Name"
+                price="Price"
+                params={props.items.params} //all the user-defined parameters
+                />
             </Column>
         </Row>
     );

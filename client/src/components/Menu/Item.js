@@ -21,9 +21,9 @@ const Item = props => {
 
             {/* The rest of the item props should be passed in as an array that can be iterated through.
             props.altVals.map
-            <Column size="12">
-                {val.name}
-            </Column>
+                <Column size="12">
+                    {val.name}
+                </Column>
         */}
 
             {/* If props.settingForClientView
@@ -32,3 +32,5 @@ const Item = props => {
         </Row>
     );
 };
+
+export default Item;

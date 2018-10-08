@@ -23,14 +23,17 @@ const Nav = props => {
                     <Navbtn
                         signin={props.signin}
                         name="Sign-In"
+                        menuClick={props.menuClick}
                     />
                     <Navbtn
                         signup={props.signup}
                         name="Sign-Up"
+                        menuClick={props.menuClick}
                     />
                     <Navbtn
                         openOptions={props.openOptions}
                         name="Options"
+                        menuClick={props.menuClick}
                     />
                 </ul>
             </div>
