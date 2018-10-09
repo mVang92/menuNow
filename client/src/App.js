@@ -29,6 +29,29 @@ export default class App extends Component {
   //   this.loadMenus();
   // };
 
+  };
+
+  constructor() {
+    super();
+    this.state = {
+      showModal: false
+    }
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
+  }
+
+  handleOpenModal() {
+    this.setState({ showModal: true });
+  }
+
+  handleCloseModal() {
+    this.setState({ showModal: false });
+  }
+
+  componentWillMount() {
+    this.loadMenus();
+  };
+
   // loadMenus = () => {
   //   API.getMenus()
   //     .then(res => {
@@ -62,9 +85,11 @@ export default class App extends Component {
   };
 
   menuClick = event => {
-    const name = event.target
+    const { name } = event.target
+    console.log(name);
     this.setState({
-      currentModal: name
+      currentModal: name,
+      showModal: true
     });
   };
 
@@ -151,6 +176,10 @@ export default class App extends Component {
           </Row>
           <ModalConductor
             currentModal={this.state.currentModal}
+            handleOpenModal={this.handleOpenModal}
+            handleCloseModal={this.handleCloseModal}
+            showModal={this.state.showModal}
+
           />
         </Container>
 

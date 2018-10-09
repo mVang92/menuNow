@@ -36,32 +36,4 @@ const ModalWrapper = props => {
   );
 };
 
-ModalWrapper.propTypes = {
-  // props
-  title: PropTypes.string,
-  showOk: PropTypes.bool,
-  okText: PropTypes.string,
-  okDisabled: PropTypes.bool,
-  width: PropTypes.number,
-  style: PropTypes.object,
-  children: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.element,
-    PropTypes.string,
-  ]).isRequired,
-
-  // methods
-  hideModal: PropTypes.func,
-  onOk: PropTypes.func,
-};
-
-ModalWrapper.defaultProps = {
-  title: '',
-  showOk: true,
-  okText: 'OK',
-  okDisabled: false,
-  width: 400,
-  onOk: () => {}
-};
-
 export default ModalWrapper;
