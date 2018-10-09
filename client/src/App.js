@@ -29,8 +29,6 @@ export default class App extends Component {
   //   this.loadMenus();
   // };
 
-  };
-
   constructor() {
     super();
     this.state = {
@@ -48,9 +46,9 @@ export default class App extends Component {
     this.setState({ showModal: false });
   }
 
-  componentWillMount() {
-    this.loadMenus();
-  };
+  // componentWillMount() {
+  //   this.loadMenus();
+  // };
 
   // loadMenus = () => {
   //   API.getMenus()
