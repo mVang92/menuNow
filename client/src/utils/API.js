@@ -1,28 +1,16 @@
 import axios from "axios";
-let BASEURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=be69431c492a4ed5ac4fc06c5f62ac03&q=";
 
 export default {
-  search: query => {
-    let q = query.query.replace(" ", "+");
-    const url = `${BASEURL}${q}+${query.start}+${query.end}`
-    return axios.get(url);
-  },
-
-  getMenus: () => { 
-    return (
-      axios.get('/api/articles')
-    ) 
-  },
-
+  
+  getItems: () => axios.get('/api/item'),
   save: data => {
     return (
-      console.log('data', data.headline),
-      axios.post(`/api/articles`, {
-        key: data._id,
-        url: data.url,
-        headline: data.headline,
-        snippet: data.snippet,
-        author: data.author,
+      axios.post(`/api/item`, {
+        _creator: data.user,
+        name: data.name,
+        ing: data.ing,
+        desc: data.desc,
+        price: data.price,
         note: data.note
       })
       .catch(function (error) {
@@ -30,10 +18,6 @@ export default {
       })
     )
   },
-
-  delete: id => {
-    return (
-      axios.delete(`/api/articles/${id}`)
-    )
-  }
+  update: id => axios.put(`/api/item/${id}`),
+  delete: id => axios.delete(`/api/item/${id}`)
 };
