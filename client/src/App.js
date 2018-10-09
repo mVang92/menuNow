@@ -8,11 +8,11 @@ import Column from './Column';
 import API from './utils/API';
 import ModalConductor from "./components/Modal/Modalconductor";
 import Menu from './components/Menu/Menu';
-import { Input, FormBtn } from "./components/Form";
+import { Input, FormBtn, Textarea} from "./components/Form";
+
 
 export default class App extends Component {
   state = {
-    message: "Search for Articles!",
     loggedin: String,
     menus: [],
     submenus: [],
@@ -41,19 +41,35 @@ export default class App extends Component {
     this.loadMenus();
   };
 
-  loadMenus = () => {
-    API.getMenus()
-      .then(res => {
-        this.setState({ menus: res.data });
+  // loadMenus = () => {
+  //   API.getMenus()
+  //     .then(res => {
+  //       this.setState({ menus: res.data });
+  //     })
+  //     .catch(err => console.log(err));
+  // };
+
+  saveMenuItem = event => {
+    event.preventDefault();
+    const data = {
+      _creator: null,
+      name: this.state.name,
+      ing: this.state.ing,
+      desc: this.state.desc,
+      price: this.state.price,
+      note: this.state.note
+    }
+    API
+      .save(data)
+      .then(function() {
+        console.log(`saved an item!!!`);
       })
-      .catch(err => console.log(err));
-  };
+  }
 
   handleChange = event => {
     let { name, value } = event.target;
     this.setState({
       [name]: value,
-      message: ""
     });
   };
 
@@ -98,9 +114,36 @@ export default class App extends Component {
         <Nav
           loggedin={this.loggedin}
           menuClick={this.menuClick}
-
         />
         <Container>
+          <Row>
+            <Column size="12">
+          <form>
+            <h4> Add a menu item</h4>
+            <div className="form-row">
+              <div className="form-group col-md-5">
+                <Input type="text" placeholder="Name of dish" onChange={this.handleChange} value={this.state.name} name="name"/>
+              </div>
+              <div className="form-group col-md-2">
+                <Input type="text" placeholder="Price" onChange={this.handleChange} value={this.state.price} name="price"/>
+              </div>
+              <div className="form-group col-md-5">
+                <Input type="text" placeholder="List ingredients of dish" onChange={this.handleChange} value={this.state.ing} name="ing" />
+              </div>
+            </div>
+            <div className="form-row">
+            <div className="form-group col-md-6">
+              <Textarea type="text" placeholder="Add a note about this item" onChange={this.handleChange} value={this.state.note} name="note" />
+            </div>
+              <div className="form-group col-md-6">
+                <Textarea type="text" placeholder="Description of dish" onChange={this.handleChange} value={this.state.desc} name="desc"/>
+                <FormBtn onClick={this.saveMenuItem}>Add</FormBtn>
+                <FormBtn >Save</FormBtn>
+              </div>
+            </div>
+          </form>
+          </Column>
+          </Row>
           <Row>
             {/* Login Buttons along top right of page */}
 

@@ -4,6 +4,7 @@ export default {
   
   getItems: () => axios.get('/api/item'),
   save: data => {
+    console.log(data)
     return (
       axios.post(`/api/item`, {
         _creator: data.user,
