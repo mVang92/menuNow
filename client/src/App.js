@@ -18,7 +18,16 @@ export default class App extends Component {
     submenus: [],
     items: [],
     currentModal: String,
+    name: "",
+    price: "",
+    ing: "",
+    desc: "",
+    note: ""
   };
+
+  // componentWillMount() {
+  //   this.loadMenus();
+  // };
 
   constructor() {
     super();
@@ -37,9 +46,9 @@ export default class App extends Component {
     this.setState({ showModal: false });
   }
 
-  componentWillMount() {
-    this.loadMenus();
-  };
+  // componentWillMount() {
+  //   this.loadMenus();
+  // };
 
   // loadMenus = () => {
   //   API.getMenus()
