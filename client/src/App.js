@@ -17,8 +17,25 @@ export default class App extends Component {
     menus: [],
     submenus: [],
     items: [],
-    currentModal: String
+    currentModal: String,
   };
+
+  constructor() {
+    super();
+    this.state = {
+      showModal: false
+    }
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
+  }
+
+  handleOpenModal() {
+    this.setState({ showModal: true });
+  }
+
+  handleCloseModal() {
+    this.setState({ showModal: false });
+  }
 
   componentWillMount() {
     this.loadMenus();
@@ -41,9 +58,11 @@ export default class App extends Component {
   };
 
   menuClick = event => {
-    const name = event.target
+    const { name } = event.target
+    console.log(name);
     this.setState({
-      currentModal: name
+      currentModal: name,
+      showModal: true
     });
   };
 
@@ -79,11 +98,12 @@ export default class App extends Component {
         <Nav
           loggedin={this.loggedin}
           menuClick={this.menuClick}
-          />
+
+        />
         <Container>
           <Row>
             {/* Login Buttons along top right of page */}
-            
+
             <div>
 
             </div>
@@ -102,9 +122,13 @@ export default class App extends Component {
           </Row>
           <ModalConductor
             currentModal={this.state.currentModal}
+            handleOpenModal={this.handleOpenModal}
+            handleCloseModal={this.handleCloseModal}
+            showModal={this.state.showModal}
+
           />
         </Container>
-        
+
       </div>
     );
   };
