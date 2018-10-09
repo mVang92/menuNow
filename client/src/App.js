@@ -79,17 +79,51 @@ export default class App extends Component {
         <Nav
           loggedin={this.loggedin}
           menuClick={this.menuClick}
-          />
+        />
         <Container>
           <Row>
+            <Column size="12">
+              <form>
+                <h4> Add a menu item</h4>
+                <div className="form-row">
+                  <div className="form-group col-md-6">
+                    <label htmlFor="validationDefault01">Name</label>
+                    <input type="text" className="form-control" id="validationDefault01" placeholder="Name of dish" value={this.state.name} required />
+                  </div>
+                  <div className="form-group col-md-6">
+                    <label htmlFor="validationDefault01">Price</label>
+                    <input type="text" className="form-control" id="validationDefault01" placeholder="Price" value={this.state.price} required />
+
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="form-group col-md-6">
+                    <label htmlFor="validationDefault01">Ingredients</label>
+                    <input type="text" className="form-control" id="validationDefault01" placeholder="List ingredients of dish" value={this.state.ing} required />
+                  </div>
+
+                  <div className="form-group col-md-6">
+                    <label htmlFor="validationDefault01">Description</label>
+                    <textarea type="text" className="form-control" id="validationDefault01" placeholder="Description of dish" value={this.state.desc} required />
+                    <button className="btn btn-danger" type="submit">Add</button>
+                    <button className="btn btn-success" type="submit">Save</button>
+                  </div>
+                </div>
+              </form>
+            </Column>
+          </Row>
+
+          <Row>
             {/* Login Buttons along top right of page */}
-            
+
             <div>
 
             </div>
             {/* if State.loggedin load menu portion else display home page stuff */}
             <Column size="6">
+
               <h3 className="heading">Active Menu Goes Here</h3>
+
               {/* Add a menu component for the active menu */}
 
             </Column>
@@ -104,7 +138,7 @@ export default class App extends Component {
             currentModal={this.state.currentModal}
           />
         </Container>
-        
+
       </div>
     );
   };
