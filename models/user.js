@@ -5,10 +5,9 @@ var Schema = mongoose.Schema;
 
 // Using the Schema constructor, create a new UserSchema object
 var userSchema = new Schema({
-  // `author` must be of type String
-  name: { type: String,
-  unique: true},
-  
+  _id: { type: Number },
+  name: { type: String, unique: true},
+  items: [{ type: Schema.Types.ObjectId, ref: 'Item' }]
 });
 
 // This creates our model from the above schema, using mongoose's model method
