@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const itemSchema = new Schema({
-  _creator: { type: Number, ref: User },
+  _creator: { type: Number, ref: "User" },
   name: {
     type: String,
     required: true,
