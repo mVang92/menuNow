@@ -1,28 +1,28 @@
-import React from 'react';
+import React from "react";
 
-import CreateAccountModal from './CreateAccountModal.jsx';
-import SignInModal from './SignInModal.jsx';
-import SignOutModal from './SignOutModal.jsx';
-import OptionsModal from './OptionsModal.jsx';
-import ReactModal from 'react-modal';
+import CreateAccountModal from "./CreateAccountModal.jsx";
+import SignInModal from "./SignInModal.jsx";
+import SignOutModal from "./SignOutModal.jsx";
+import OptionsModal from "./OptionsModal.jsx";
+import ReactModal from "react-modal";
 
 const ModalConductor = props => {
 
-    { console.log(props) }
+    // { console.log(props) }
     switch (props.currentModal) {
 
-        case 'Sign-Up':
+        case "Sign-Up":
             return <CreateAccountModal {...props} />;
 
-        case 'Sign-In':
+        case "Sign-In":
             return <SignInModal {...props} />
 
         //    return <SignInModal {...props} />;
 
-        case 'Sign-Out':
+        case "Sign-Out":
             return <SignOutModal {...props} />;
 
-        case 'Options':
+        case "Options":
             return <OptionsModal {...props} />;
 
         default:
