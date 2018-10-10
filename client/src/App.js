@@ -41,7 +41,7 @@ export default class App extends Component {
   };
 
   handleCloseModal() {
-    this.setState({ showModal: false });
+    this.setState({ showModal: false };
   };
 
   // componentWillMount() {
