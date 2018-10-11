@@ -8,16 +8,16 @@ const prodConfig = {
   projectId: "project-3-c22e9",
   storageBucket: "project-3-c22e9.appspot.com",
   messagingSenderId: "645556258073"
-}
+};
 
 const devConfig = {
   apiKey: "AIzaSyBogHFmEXhICrvzySzkGjPf0PpMWnrt2uc",
-    authDomain: "project-3-c22e9.firebaseapp.com",
-    databaseURL: "https://project-3-c22e9.firebaseio.com",
-    projectId: "project-3-c22e9",
-    storageBucket: "project-3-c22e9.appspot.com",
-    messagingSenderId: "645556258073"
-}
+  authDomain: "project-3-c22e9.firebaseapp.com",
+  databaseURL: "https://project-3-c22e9.firebaseio.com",
+  projectId: "project-3-c22e9",
+  storageBucket: "project-3-c22e9.appspot.com",
+  messagingSenderId: "645556258073"
+};
 
 const config = process.env.NODE_ENV === "production"
   ? prodConfig

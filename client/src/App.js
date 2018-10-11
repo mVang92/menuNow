@@ -77,8 +77,8 @@ export default class App extends Component {
     let { name, value } = event.target;
     this.setState({
       [name]: value,
-    });
-    console.log(name, value);
+    })
+    // console.log(name, value);
   };
 
   menuClick = event => {
@@ -118,9 +118,15 @@ export default class App extends Component {
 
   handleSignIn(event) {
     event.preventDefault();
-    console.log(this.state.email, this.state.password)
-    auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password);
-    
+    this.handleCloseModal()
+    // console.log(this.state.email, this.state.password)
+    auth.doSignInWithEmailAndPassword(this.state.email, this.state.password)
+      .then(() => {
+        this.setState({
+          loggedin: true
+        });
+      }
+    )
   }
 
   render() {
@@ -193,7 +199,7 @@ export default class App extends Component {
             handleChange={this.handleChange}
           />
         </Container>
-      </div>
+      </div >
     );
   };
 };
