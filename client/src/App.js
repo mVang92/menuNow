@@ -204,12 +204,12 @@ export default class App extends Component {
                 <Column size="6">
                   <h3 className="heading">Active Menu Goes Here</h3>
                   {/* Add a menu component for the active menu */}
+                  <Menu title="TortasTOGO"/>
 
                 </Column>
                 <Column size="6">
                   <h3 className="heading">Removed Menu Goes Here</h3>
                   {/* Add a Menu Component for the removed menu */}
-
                 </Column>
               </Row>
             </span>
