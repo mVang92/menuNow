@@ -17,21 +17,34 @@ const Nav = props => {
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
-                    <Navbtn
-                        signin={props.signin}
-                        name="Sign-In"
-                        onClick={props.menuClick}
-                    />
-                    <Navbtn
-                        signup={props.signup}
-                        name="Sign-Up"
-                        onClick={props.menuClick}
-                    />
-                    <Navbtn
-                        openOptions={props.openOptions}
-                        name="Options"
-                        onClick={props.menuClick}
-                    />
+                    {props.loggedin === true ? (
+                        <span>
+                            <Navbtn
+                                name="Sign-Out"
+                                onClick={props.menuClick}
+                            />
+                            <Navbtn
+                                openOptions={props.openOptions}
+                                name="Options"
+                                onClick={props.menuClick}
+                            />
+                        </span>
+
+                    ) : ( //If not logged in, these buttons will appear
+                            <span>
+                                <Navbtn
+                                    signin={props.signin}
+                                    name="Sign-In"
+                                    onClick={props.menuClick}
+                                />
+                                <Navbtn
+                                    signup={props.signup}
+                                    name="Sign-Up"
+                                    onClick={props.menuClick}
+                                />
+                            </span>
+                        )
+                    }
                 </ul>
             </div>
         </nav>

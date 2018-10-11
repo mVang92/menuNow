@@ -41,7 +41,7 @@ export default class App extends Component {
   };
 
   handleCloseModal() {
-    this.setState({ showModal: false };
+    this.setState({ showModal: false });
   };
 
   // componentWillMount() {
@@ -77,7 +77,7 @@ export default class App extends Component {
     let { name, value } = event.target;
     this.setState({
       [name]: value,
-    })
+    });
     console.log(name, value);
   };
 
