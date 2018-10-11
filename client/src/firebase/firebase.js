@@ -2,11 +2,21 @@ import firebase from "firebase/app";
 import "firebase/auth";
 
 const prodConfig = {
-  // firebase
+  apiKey: "AIzaSyBogHFmEXhICrvzySzkGjPf0PpMWnrt2uc",
+  authDomain: "project-3-c22e9.firebaseapp.com",
+  databaseURL: "https://project-3-c22e9.firebaseio.com",
+  projectId: "project-3-c22e9",
+  storageBucket: "project-3-c22e9.appspot.com",
+  messagingSenderId: "645556258073"
 }
 
 const devConfig = {
-  // firebase
+  apiKey: "AIzaSyBogHFmEXhICrvzySzkGjPf0PpMWnrt2uc",
+    authDomain: "project-3-c22e9.firebaseapp.com",
+    databaseURL: "https://project-3-c22e9.firebaseio.com",
+    projectId: "project-3-c22e9",
+    storageBucket: "project-3-c22e9.appspot.com",
+    messagingSenderId: "645556258073"
 }
 
 const config = process.env.NODE_ENV === "production"
