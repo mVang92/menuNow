@@ -44,9 +44,39 @@ export default class App extends Component {
     this.setState({ showModal: false });
   };
 
-  // componentWillMount() {
-  //   this.loadMenus();
-  // };
+  getCookie = (cname) => {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+  checkCookie = () => {
+    const cookielog = this.getCookie("loggedin");
+    if (cookielog != "") {
+      this.setState({ loggedin: true });
+    };
+  };
+
+  setCookie = (cname, cvalue, exdays) => {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  };
+
+  componentWillMount() {
+    this.checkCookie();
+  };
 
   // loadMenus = () => {
   //   API.getMenus()
@@ -122,6 +152,7 @@ export default class App extends Component {
     // console.log(this.state.email, this.state.password)
     auth.doSignInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
+        this.setCookie("loggedin", "yes", 30);
         this.setState({
           loggedin: true
         });
