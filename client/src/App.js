@@ -78,7 +78,7 @@ export default class App extends Component {
     this.setState({
       [name]: value,
     })
-    // console.log(name, value);
+    console.log(name, value);
   };
 
   menuClick = event => {
@@ -118,7 +118,7 @@ export default class App extends Component {
 
   handleSignIn(event) {
     event.preventDefault();
-    this.handleCloseModal()
+    this.handleCloseModal();
     // console.log(this.state.email, this.state.password)
     auth.doSignInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
@@ -126,7 +126,21 @@ export default class App extends Component {
           loggedin: true
         });
       }
-    )
+      )
+  }
+
+  handleSignUp(event) {
+    event.preventDefault();
+    // this.handleCloseModal();
+    console.log("email: " + this.state.email);
+    console.log("password: " + this.state.password);
+    auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
+      // .then(() => {
+      //   this.setState({
+      //     loggedin: true
+      //   });
+      // }
+      // )
   }
 
   render() {
@@ -196,6 +210,7 @@ export default class App extends Component {
             handleCloseModal={this.handleCloseModal}
             showModal={this.state.showModal}
             handleSignIn={this.handleSignIn}
+            handleSignUp={this.handleSignUp}
             handleChange={this.handleChange}
           />
         </Container>
