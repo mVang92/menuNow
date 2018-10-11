@@ -16,9 +16,9 @@ const Nav = props => {
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
-                <ul className="navbar-nav">
+                
                     {props.loggedin === true ? (
-                        <span>
+                        <ul className="navbar-nav">
                             <Navbtn
                                 name="Sign-Out"
                                 onClick={props.menuClick}
@@ -28,10 +28,10 @@ const Nav = props => {
                                 name="Options"
                                 onClick={props.menuClick}
                             />
-                        </span>
+                        </ul>
 
                     ) : ( //If not logged in, these buttons will appear
-                            <span>
+                        <ul className="navbar-nav">
                                 <Navbtn
                                     signin={props.signin}
                                     name="Sign-In"
@@ -42,10 +42,9 @@ const Nav = props => {
                                     name="Sign-Up"
                                     onClick={props.menuClick}
                                 />
-                            </span>
+                            </ul>
                         )
                     }
-                </ul>
             </div>
         </nav>
     );
