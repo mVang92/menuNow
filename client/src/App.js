@@ -34,6 +34,7 @@ export default class App extends Component {
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleSignIn = this.handleSignIn.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
   };
 
   handleOpenModal() {
@@ -113,7 +114,7 @@ export default class App extends Component {
 
   menuClick = event => {
     const { name } = event.target
-    console.log(name);
+    // console.log(name);
     this.setState({
       currentModal: name,
       showModal: true
@@ -158,6 +159,19 @@ export default class App extends Component {
         });
       }
       )
+  }
+
+  handleSignOut(event) {
+    event.preventDefault();
+    console.log("yo")
+    // this.handleCloseModal();
+    // auth.doSignOut()
+    //   .then(() => {
+    //     this.setState({
+    //       loggedin: false
+    //     });
+    //   }
+    //   )
   }
 
   render() {
@@ -227,6 +241,7 @@ export default class App extends Component {
             handleCloseModal={this.handleCloseModal}
             showModal={this.state.showModal}
             handleSignIn={this.handleSignIn}
+            handleSignOut={this.handleSignOut}
             handleChange={this.handleChange}
           />
         </Container>
