@@ -3,7 +3,7 @@ import axios from "axios";
 export default {
   
   getItems: () => axios.get('/api/item'),
-  createMenu: data => {
+  createMenu: (user, data) => {
     console.log('HIT THIS ROUTE')
     // Won't work if they enter more than 3 submenus
     return (
@@ -12,7 +12,8 @@ export default {
           data[0],
           data[1],
           data[2]
-        ]
+        ],
+        creator: user
       })
       .then(console.log("MENU CREATED"))
       .catch(error => { console.log(error) })
