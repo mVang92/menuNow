@@ -9,7 +9,8 @@ import ModalConductor from "./components/Modal/Modalconductor";
 import Menu from "./components/Menu/Menu";
 import { Input, FormBtn, Textarea } from "./components/Form";
 import { auth } from "./firebase"
-
+// This prevents "App element not defined" warning
+import Modal from "react-modal";
 
 export default class App extends Component {
   constructor() {
@@ -27,14 +28,22 @@ export default class App extends Component {
       desc: "",
       note: "",
       // User Authentication
-      email: '',
-      password: ''
+      status: "",
+      email: "",
+      password: ""
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleSignIn = this.handleSignIn.bind(this);
+    this.handleSignUp = this.handleSignUp.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
+  };
+
+  componentWillMount() {
+    this.checkCookie();
+    // This prevents "App element not defined" warning
+    Modal.setAppElement("body");
   };
 
   handleOpenModal() {
@@ -48,10 +57,10 @@ export default class App extends Component {
   getCookie = (cname) => {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
+    var ca = decodedCookie.split(";");
     for (var i = 0; i < ca.length; i++) {
       var c = ca[i];
-      while (c.charAt(0) == ' ') {
+      while (c.charAt(0) == " ") {
         c = c.substring(1);
       }
       if (c.indexOf(name) == 0) {
@@ -73,10 +82,6 @@ export default class App extends Component {
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     const expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-  };
-
-  componentWillMount() {
-    this.checkCookie();
   };
 
   // loadMenus = () => {
@@ -149,29 +154,56 @@ export default class App extends Component {
 
   handleSignIn(event) {
     event.preventDefault();
-    this.handleCloseModal()
+    console.log("signing in: " + this.state.email);
     // console.log(this.state.email, this.state.password)
-    auth.doSignInWithEmailAndPassword(this.state.email, this.state.password)
+    auth
+      .doSignInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
         this.setCookie("loggedin", "yes", 30);
         this.setState({
           loggedin: true
         });
-      }
-      )
-  }
+        this.handleCloseModal();
+      })
+      .catch(error => {
+        this.state.status = error.message;
+        alert(this.state.status);
+      });
+  };
+
+  handleSignUp(event) {
+    event.preventDefault();
+    console.log("signing up: " + this.state.email);
+    auth
+      .doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then(() => {
+        this.setCookie("loggedin", "yes", 30);
+        this.setState({
+          loggedin: true
+        });
+        this.handleCloseModal();
+      })
+      .catch(error => {
+        this.state.status = error.message;
+        alert(this.state.status);
+      });
+  };
 
   handleSignOut(event) {
     event.preventDefault();
-    console.log("yo")
-    // this.handleCloseModal();
-    // auth.doSignOut()
-    //   .then(() => {
-    //     this.setState({
-    //       loggedin: false
-    //     });
-    //   }
-    //   )
+    console.log("signing out");
+    auth
+      .doSignOut()
+      .then(() => {
+        this.setCookie("loggedin", "no", 0);
+        this.setState({
+          loggedin: false
+        });
+      });
+  };
+
+  openOptions() {
+    alert("Brady, this is being called twice for some reason :/")
   }
 
   render() {
@@ -180,6 +212,8 @@ export default class App extends Component {
         <Nav
           loggedin={this.state.loggedin}
           menuClick={this.menuClick}
+          signOut={this.handleSignOut}
+          openOptions={this.openOptions}
         />
         <Container>
           {/* Login Buttons along top right of page */}
@@ -188,8 +222,9 @@ export default class App extends Component {
             <span>
               <Row>
                 <Column size="12">
+                  {/* onSubmit on in form for testing. Remove when we figure how to use it in nav */}
                   <form>
-                    <h4> Add a menu item</h4>
+                    <h4>Add a menu item</h4>
                     <div className="form-row">
                       <div className="form-group col-md-5">
                         <Input type="text" placeholder="Name of dish" onChange={this.handleChange} value={this.state.name} name="name" />
@@ -208,7 +243,7 @@ export default class App extends Component {
                       <div className="form-group col-md-6">
                         <Textarea type="text" placeholder="Description of dish" onChange={this.handleChange} value={this.state.desc} name="desc" />
                         <FormBtn onClick={this.saveMenuItem}>Add</FormBtn>
-                        <FormBtn >Save</FormBtn>
+                        <FormBtn>Save</FormBtn>
                       </div>
                     </div>
                   </form>
@@ -242,6 +277,7 @@ export default class App extends Component {
             showModal={this.state.showModal}
             handleSignIn={this.handleSignIn}
             handleSignOut={this.handleSignOut}
+            handleSignUp={this.handleSignUp}
             handleChange={this.handleChange}
           />
         </Container>

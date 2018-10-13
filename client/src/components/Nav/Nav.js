@@ -1,7 +1,6 @@
 import React from "react";
 import "./Nav.css";
 import Navbtn from "./Navbtn";
-import { auth } from "../../firebase";
 
 const Nav = props => {
     // function for sign in
@@ -21,14 +20,12 @@ const Nav = props => {
                 {props.loggedin === true ? (
                     <ul className="navbar-nav">
                         <Navbtn
-                            signout={props.signout}
                             name="Sign-Out"
-                            onClick={auth.doSignOut}
+                            onClick={props.signOut}
                         />
                         <Navbtn
-                            openoptions={props.openoptions}
                             name="Options"
-                            onClick={props.menuClick}
+                            onClick={props.openOptions}
                         />
                     </ul>
 
