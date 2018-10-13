@@ -8,7 +8,7 @@ import API from "./utils/API";
 import ModalConductor from "./components/Modal/Modalconductor";
 import Menu from "./components/Menu/Menu";
 import { Input, FormBtn, Textarea } from "./components/Form";
-import { auth } from "./firebase"
+import { firebase, auth } from "./firebase"
 // This prevents "App element not defined" warning
 import Modal from "react-modal";
 
@@ -91,15 +91,24 @@ export default class App extends Component {
   //     })
   //     .catch(err => console.log(err));
   // };
+
   createMenu = event => {
     event.preventDefault();
     let splitSubmenus = this.state.submenus.split(",");
     console.log(splitSubmenus);
-    API.createMenu(splitSubmenus)
-    .then(function (menu) {
-      console.log(menu)
-      console.log("created a menu!!!");
+    firebase.auth.onAuthStateChanged(function (user) {
+      if (user) {
+        API.createMenu(user.uid, splitSubmenus)
+          .then(function (menu) {
+            console.log(menu);
+            console.log("created a menu!!!");
+          });
+      } else {
+        // No user is signed in.
+      };
     });
+
+
   }
 
   saveMenuItem = event => {
@@ -184,18 +193,20 @@ export default class App extends Component {
   handleSignUp(event) {
     event.preventDefault();
     console.log("signing up: " + this.state.email);
-    auth
-      .doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => {
-        this.setCookie("loggedin", "yes", 30);
-        this.setState({
-          loggedin: true
-        });
-        this.handleCloseModal();
-      })
-      .catch(error => {
-        this.state.status = error.message;
-        alert(this.state.status);
+    auth().setPersistence(auth.Auth.Persistence.LOCAL)
+      .then(function () {
+        auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
+          .then(() => {
+            //this.setCookie("loggedin", "yes", 30);
+            this.setState({
+              loggedin: true
+            });
+            this.handleCloseModal();
+          })
+          .catch(error => {
+            this.state.status = error.message;
+            alert(this.state.status);
+          });
       });
   };
 
@@ -211,10 +222,6 @@ export default class App extends Component {
         });
       });
   };
-
-  openOptions() {
-    alert("Brady, this is being called twice for some reason :/")
-  }
 
   render() {
     return (

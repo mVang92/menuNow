@@ -25,19 +25,17 @@ const Nav = props => {
                         />
                         <Navbtn
                             name="Options"
-                            onClick={props.openOptions}
+                            onClick={props.menuClick}
                         />
                     </ul>
 
                 ) : ( //If not logged in, these buttons will appear
                         <ul className="navbar-nav">
                             <Navbtn
-                                signin={props.signin}
                                 name="Sign-In"
                                 onClick={props.menuClick}
                             />
                             <Navbtn
-                                signup={props.signup}
                                 name="Sign-Up"
                                 onClick={props.menuClick}
                             />

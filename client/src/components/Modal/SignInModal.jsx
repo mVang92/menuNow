@@ -7,7 +7,6 @@ const SignIn = props => {
     return (
         <ReactModal
             isOpen={props.showModal}
-            contentLabel="Minimal Modal Example"
             className="Modal__Bootstrap modal-dialog"
             shouldCloseOnOverlayClick={true}
             closeTimeoutMS={150}
