@@ -19,7 +19,7 @@ export default class App extends Component {
       showModal: false,
       loggedin: false,
       menus: [],
-      submenus: [],
+      submenus: "",
       items: [],
       currentModal: String,
       name: "",
@@ -91,6 +91,16 @@ export default class App extends Component {
   //     })
   //     .catch(err => console.log(err));
   // };
+  createMenu = event => {
+    event.preventDefault();
+    let splitSubmenus = this.state.submenus.split(",");
+    console.log(splitSubmenus);
+    API.createMenu(splitSubmenus)
+    .then(function (menu) {
+      console.log(menu)
+      console.log("created a menu!!!");
+    });
+  }
 
   saveMenuItem = event => {
     event.preventDefault();
@@ -223,6 +233,16 @@ export default class App extends Component {
               <Row>
                 <Column size="12">
                   {/* onSubmit on in form for testing. Remove when we figure how to use it in nav */}
+                  {/* ONLY IF THEY HAVEN'T ADDED A MENU */}
+                  <form>
+                    <h4>Create your Menu</h4>
+                    <div className="form-row">
+                      <div className="form-group col-md-12">
+                        <Input type="text" placeholder="Enter your submenus, separated by comma" onChange={this.handleChange} value={this.state.submenus} name="submenus" />
+                        <FormBtn onClick={this.createMenu}>Add Menu</FormBtn>
+                      </div>
+                    </div>
+                  </form>
                   <form>
                     <h4>Add a menu item</h4>
                     <div className="form-row">
