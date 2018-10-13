@@ -16,35 +16,34 @@ const Nav = props => {
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
-                
-                    {props.loggedin === true ? (
+
+                {props.loggedin === true ? (
+                    <ul className="navbar-nav">
+                        <Navbtn
+                            name="Sign-Out"
+                            onClick={props.signOut}
+                        />
+                        <Navbtn
+                            name="Options"
+                            onClick={props.openOptions}
+                        />
+                    </ul>
+
+                ) : ( //If not logged in, these buttons will appear
                         <ul className="navbar-nav">
                             <Navbtn
-                                name="Sign-Out"
+                                signin={props.signin}
+                                name="Sign-In"
                                 onClick={props.menuClick}
                             />
                             <Navbtn
-                                openOptions={props.openOptions}
-                                name="Options"
+                                signup={props.signup}
+                                name="Sign-Up"
                                 onClick={props.menuClick}
                             />
                         </ul>
-
-                    ) : ( //If not logged in, these buttons will appear
-                        <ul className="navbar-nav">
-                                <Navbtn
-                                    signin={props.signin}
-                                    name="Sign-In"
-                                    onClick={props.menuClick}
-                                />
-                                <Navbtn
-                                    signup={props.signup}
-                                    name="Sign-Up"
-                                    onClick={props.menuClick}
-                                />
-                            </ul>
-                        )
-                    }
+                    )
+                }
             </div>
         </nav>
     );

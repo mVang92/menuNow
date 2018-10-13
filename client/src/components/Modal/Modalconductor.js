@@ -1,10 +1,8 @@
 import React from "react";
-
 import CreateAccountModal from "./CreateAccountModal.jsx";
 import SignInModal from "./SignInModal.jsx";
 import SignOutModal from "./SignOutModal.jsx";
 import OptionsModal from "./OptionsModal.jsx";
-import ReactModal from "react-modal";
 
 const ModalConductor = props => {
 
@@ -15,9 +13,7 @@ const ModalConductor = props => {
             return <CreateAccountModal {...props} />;
 
         case "Sign-In":
-            return <SignInModal {...props} />
-
-        //    return <SignInModal {...props} />;
+            return <SignInModal {...props} />;
 
         case "Sign-Out":
             return <SignOutModal {...props} />;
