@@ -18,9 +18,8 @@ export default class App extends Component {
     this.state = {
       showModal: false,
       loggedin: false,
-      uid: "",
-      menu: {},
-      submenus: "",
+      menu: String,
+      submenus: [],
       items: [],
       currentModal: String,
       name: "",
