@@ -206,20 +206,6 @@ export default class App extends Component {
     alert("Brady, this is being called twice for some reason :/")
   }
 
-  handleSignUp(event) {
-    event.preventDefault();
-    // this.handleCloseModal();
-    console.log("email: " + this.state.email);
-    console.log("password: " + this.state.password);
-    auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
-      // .then(() => {
-      //   this.setState({
-      //     loggedin: true
-      //   });
-      // }
-      // )
-  }
-
   render() {
     return (
       <div>
@@ -290,10 +276,7 @@ export default class App extends Component {
             handleCloseModal={this.handleCloseModal}
             showModal={this.state.showModal}
             handleSignIn={this.handleSignIn}
-<<<<<<< HEAD
-=======
             handleSignOut={this.handleSignOut}
->>>>>>> 4e4efd0c5ddae6cff482d60f898ec290ad34274f
             handleSignUp={this.handleSignUp}
             handleChange={this.handleChange}
           />
