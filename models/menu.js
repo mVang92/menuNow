@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 
 const menuSchema = new Schema({
   creator: { type: String },
-  submenu: {
+  submenu: [{
     type: String
-  },
+  }],
   items: [{
     submenu: { type: String },
     name: { type: String },
