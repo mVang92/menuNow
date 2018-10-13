@@ -2,7 +2,7 @@ import React from 'react';
 
 const Navbtn = props => {
     return (
-        <div {...props} className="nav-item">
+        <div className="nav-item">
             <a {...props} className="nav-link" href="#">{props.name}</a>
         </div>
     )
