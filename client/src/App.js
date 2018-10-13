@@ -212,10 +212,6 @@ export default class App extends Component {
       });
   };
 
-  openOptions() {
-    alert("Brady, this is being called twice for some reason :/")
-  }
-
   render() {
     return (
       <div>
