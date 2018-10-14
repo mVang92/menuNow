@@ -18,7 +18,8 @@ export default class App extends Component {
     this.state = {
       showModal: false,
       loggedin: false,
-      menus: [],
+      uid: "",
+      menu: {},
       submenus: "",
       items: [],
       currentModal: String,
@@ -76,11 +77,18 @@ export default class App extends Component {
     const cookielog = this.getCookie("loggedin");
     if (cookielog != "") {
       this.setState({ loggedin: true });
-      firebase.auth.onAuthStateChanged(function (user) {
+      firebase.auth.onAuthStateChanged( (user) => {
         if (user) {
-          console.log(user.uid);
-          //need to call API.getMenu or something like that or a function that does the same (loadMenus?) while passing in user.uid as the required param to search the db for
-        };
+          this.setState({ uid: user.uid })
+          const id = user.uid
+          API.getMenu(id)
+            .then(res => {
+              this.setState({ menu: res.data });
+            })
+            .catch(err => console.log(err));
+        } else {
+          this.setState({ uid: null });
+        }
       });
     };
   };
@@ -92,14 +100,6 @@ export default class App extends Component {
     const expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
   };
-
-  // loadMenus = () => {
-  //   API.getMenus()
-  //     .then(res => {
-  //       this.setState({ menus: res.data });
-  //     })
-  //     .catch(err => console.log(err));
-  // };
 
   createMenu = event => {
     event.preventDefault();
@@ -200,18 +200,18 @@ export default class App extends Component {
   handleSignUp(event) {
     event.preventDefault();
     console.log("signing up: " + this.state.email);
-        auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
-          .then(() => {
-            this.setCookie("loggedin", "yes", 30);
-            this.setState({
-              loggedin: true
-            });
-            this.handleCloseModal();
-          })
-          .catch(error => {
-            this.state.status = error.message;
-            alert(this.state.status);
-          });
+    auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then(() => {
+        this.setCookie("loggedin", "yes", 30);
+        this.setState({
+          loggedin: true
+        });
+        this.handleCloseModal();
+      })
+      .catch(error => {
+        this.state.status = error.message;
+        alert(this.state.status);
+      });
   };
 
   handleSignOut(event) {
