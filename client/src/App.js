@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Nav from "./components/Nav";
-import Jumbotron from "./components/Jumbotron";
+// import Jumbotron from "./components/Jumbotron";
 import Container from "./Container";
 import Row from "./Row";
 import Column from "./Column";
@@ -42,9 +42,18 @@ export default class App extends Component {
   };
 
   componentWillMount() {
-    this.checkCookie();
     // This prevents "App element not defined" warning
     Modal.setAppElement("body");
+    this.checkCookie();
+    // Clears values inside input boxes
+    this.setState({
+      name: "",
+      price: "",
+      desc: "",
+      ing: "",
+      note: ""
+    })
+
   };
 
   handleOpenModal() {
@@ -62,10 +71,10 @@ export default class App extends Component {
     var ca = decodedCookie.split(";");
     for (var i = 0; i < ca.length; i++) {
       var c = ca[i];
-      while (c.charAt(0) == " ") {
+      while (c.charAt(0) === " ") {
         c = c.substring(1);
-      };
-      if (c.indexOf(name) == 0) {
+      }
+      if (c.indexOf(name) === 0) {
         return c.substring(name.length, c.length);
       };
     };
@@ -75,7 +84,7 @@ export default class App extends Component {
   // Checks the loggedin cookie and, if logged in, loads the logged in components and grabs menus from the mongodb.
   checkCookie = () => {
     const cookielog = this.getCookie("loggedin");
-    if (cookielog != "") {
+    if (cookielog !== "") {
       this.setState({ loggedin: true });
       firebase.auth.onAuthStateChanged( (user) => {
         if (user) {
@@ -133,6 +142,7 @@ export default class App extends Component {
       .then(function () {
         console.log("saved an item!!!");
       });
+    this.componentWillMount();
   };
 
   handleChange = event => {
@@ -140,7 +150,7 @@ export default class App extends Component {
     this.setState({
       [name]: value,
     })
-    console.log(name, value);
+    // console.log(name, value);
   };
 
   menuClick = event => {
@@ -175,13 +185,12 @@ export default class App extends Component {
     };
 
     console.log(data);
-    API.save(data).then(() => { this.loadArticles() });
+    API.save(data).then(() => { this.loadMenus() });
   };
 
   handleSignIn(event) {
     event.preventDefault();
     console.log("signing in: " + this.state.email);
-    // console.log(this.state.email, this.state.password)
     auth
       .doSignInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
@@ -192,7 +201,9 @@ export default class App extends Component {
         this.handleCloseModal();
       })
       .catch(error => {
-        this.state.status = error.message;
+        this.setState({
+          status: error.message
+        })
         alert(this.state.status);
       });
   };
@@ -239,7 +250,7 @@ export default class App extends Component {
         <Container>
           {/* Login Buttons along top right of page */}
           {/* if State.loggedin load menu portion else display home page stuff */}
-          {this.state.loggedin == true ? (
+          {this.state.loggedin === true ? (
             <span>
               <Row>
                 <Column size="12">
@@ -274,7 +285,6 @@ export default class App extends Component {
                       <div className="form-group col-md-6">
                         <Textarea type="text" placeholder="Description of dish" onChange={this.handleChange} value={this.state.desc} name="desc" />
                         <FormBtn onClick={this.saveMenuItem}>Add</FormBtn>
-                        <FormBtn>Save</FormBtn>
                       </div>
                     </div>
                   </form>
@@ -284,7 +294,9 @@ export default class App extends Component {
                 <Column size="6">
                   <h3 className="heading">Active Menu Goes Here</h3>
                   {/* Add a menu component for the active menu */}
+                  <Menu>
 
+                  </Menu>
                 </Column>
                 <Column size="6">
                   <h3 className="heading">Removed Menu Goes Here</h3>
