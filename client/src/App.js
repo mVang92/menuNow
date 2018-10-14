@@ -193,7 +193,7 @@ export default class App extends Component {
     auth
       .doSignInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
-        this.setCookie("loggedin", "yes", 30);
+        // this.setCookie("loggedin", "yes", 30);
         this.setState({
           loggedin: true
         });
@@ -210,17 +210,20 @@ export default class App extends Component {
   handleSignUp(event) {
     event.preventDefault();
     console.log("signing up: " + this.state.email);
-    auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => {
-        this.setCookie("loggedin", "yes", 30);
-        this.setState({
-          loggedin: true
-        });
-        this.handleCloseModal();
-      })
-      .catch(error => {
-        this.state.status = error.message;
-        alert(this.state.status);
+    firebase.auth.setPersistence(auth.Auth.Persistence.LOCAL)
+      .then(function () {
+        auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
+          .then(() => {
+            //this.setCookie("loggedin", "yes", 30);
+            this.setState({
+              loggedin: true
+            });
+            this.handleCloseModal();
+          })
+          .catch(error => {
+            this.state.status = error.message;
+            alert(this.state.status);
+          });
       });
   };
 
