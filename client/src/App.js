@@ -18,7 +18,8 @@ export default class App extends Component {
     this.state = {
       showModal: false,
       loggedin: false,
-      menus: [],
+      uid: "",
+      menu: {},
       submenus: "",
       items: [],
       currentModal: String,
@@ -54,6 +55,7 @@ export default class App extends Component {
     this.setState({ showModal: false });
   };
 
+  // Searches the cookies for the specific cookie named
   getCookie = (cname) => {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -62,35 +64,42 @@ export default class App extends Component {
       var c = ca[i];
       while (c.charAt(0) == " ") {
         c = c.substring(1);
-      }
+      };
       if (c.indexOf(name) == 0) {
         return c.substring(name.length, c.length);
-      }
-    }
+      };
+    };
     return "";
-  }
+  };
 
+  // Checks the loggedin cookie and, if logged in, loads the logged in components and grabs menus from the mongodb.
   checkCookie = () => {
     const cookielog = this.getCookie("loggedin");
     if (cookielog != "") {
       this.setState({ loggedin: true });
+      firebase.auth.onAuthStateChanged( (user) => {
+        if (user) {
+          this.setState({ uid: user.uid })
+          const id = user.uid
+          API.getMenu(id)
+            .then(res => {
+              this.setState({ menu: res.data });
+            })
+            .catch(err => console.log(err));
+        } else {
+          this.setState({ uid: null });
+        }
+      });
     };
   };
 
+  //Sets a cookie with name cname, value cvalue, and for length of days exdays.
   setCookie = (cname, cvalue, exdays) => {
     const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     const expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
   };
-
-  // loadMenus = () => {
-  //   API.getMenus()
-  //     .then(res => {
-  //       this.setState({ menus: res.data });
-  //     })
-  //     .catch(err => console.log(err));
-  // };
 
   createMenu = event => {
     event.preventDefault();
@@ -107,9 +116,7 @@ export default class App extends Component {
         // No user is signed in.
       };
     });
-
-
-  }
+  };
 
   saveMenuItem = event => {
     event.preventDefault();
@@ -193,20 +200,17 @@ export default class App extends Component {
   handleSignUp(event) {
     event.preventDefault();
     console.log("signing up: " + this.state.email);
-    auth().setPersistence(auth.Auth.Persistence.LOCAL)
-      .then(function () {
-        auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
-          .then(() => {
-            //this.setCookie("loggedin", "yes", 30);
-            this.setState({
-              loggedin: true
-            });
-            this.handleCloseModal();
-          })
-          .catch(error => {
-            this.state.status = error.message;
-            alert(this.state.status);
-          });
+    auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then(() => {
+        this.setCookie("loggedin", "yes", 30);
+        this.setState({
+          loggedin: true
+        });
+        this.handleCloseModal();
+      })
+      .catch(error => {
+        this.state.status = error.message;
+        alert(this.state.status);
       });
   };
 

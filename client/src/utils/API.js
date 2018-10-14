@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default {
   
-  getItems: () => axios.get('/api/item'),
+  getMenu: id => axios.get(`/api/menu/${id}`),
   createMenu: (user, data) => {
     console.log('HIT THIS ROUTE')
     // Won't work if they enter more than 3 submenus
