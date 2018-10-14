@@ -54,6 +54,7 @@ export default class App extends Component {
     this.setState({ showModal: false });
   };
 
+  // Searches the cookies for the specific cookie named
   getCookie = (cname) => {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -62,21 +63,29 @@ export default class App extends Component {
       var c = ca[i];
       while (c.charAt(0) == " ") {
         c = c.substring(1);
-      }
+      };
       if (c.indexOf(name) == 0) {
         return c.substring(name.length, c.length);
-      }
-    }
+      };
+    };
     return "";
-  }
+  };
 
+  // Checks the loggedin cookie and, if logged in, loads the logged in components and grabs menus from the mongodb.
   checkCookie = () => {
     const cookielog = this.getCookie("loggedin");
     if (cookielog != "") {
       this.setState({ loggedin: true });
+      firebase.auth.onAuthStateChanged(function (user) {
+        if (user) {
+          console.log(user.uid);
+          //need to call API.getMenu or something like that or a function that does the same (loadMenus?) while passing in user.uid as the required param to search the db for
+        };
+      });
     };
   };
 
+  //Sets a cookie with name cname, value cvalue, and for length of days exdays.
   setCookie = (cname, cvalue, exdays) => {
     const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -107,9 +116,7 @@ export default class App extends Component {
         // No user is signed in.
       };
     });
-
-
-  }
+  };
 
   saveMenuItem = event => {
     event.preventDefault();
@@ -193,11 +200,9 @@ export default class App extends Component {
   handleSignUp(event) {
     event.preventDefault();
     console.log("signing up: " + this.state.email);
-    auth().setPersistence(auth.Auth.Persistence.LOCAL)
-      .then(function () {
         auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
           .then(() => {
-            //this.setCookie("loggedin", "yes", 30);
+            this.setCookie("loggedin", "yes", 30);
             this.setState({
               loggedin: true
             });
@@ -207,7 +212,6 @@ export default class App extends Component {
             this.state.status = error.message;
             alert(this.state.status);
           });
-      });
   };
 
   handleSignOut(event) {
