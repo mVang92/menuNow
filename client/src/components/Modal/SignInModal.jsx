@@ -7,7 +7,6 @@ const SignIn = props => {
     return (
         <ReactModal
             isOpen={props.showModal}
-            contentLabel="Minimal Modal Example"
             className="Modal__Bootstrap modal-dialog"
             shouldCloseOnOverlayClick={true}
             closeTimeoutMS={150}
@@ -22,12 +21,11 @@ const SignIn = props => {
                             <input type="text" value={props.email} name="email" onChange={props.handleChange} placeholder="Email"></input>
                             <br></br>
                             <br></br>
-                            <input type="text" value={props.password} name="password" onChange={props.handleChange} placeholder="Password"></input>
+                            <input type="password" value={props.password} name="password" onChange={props.handleChange} placeholder="Password"></input>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" onClick={props.handleCloseModal} data-dismiss="modal">Close</button>
-                            <button className="btn btn-secondary" disabled={props.isInvalid} type="submit">Sign In</button>
-                            {props.error && <p>{props.error.message}</p>}
+                            <button className="btn btn-secondary" type="submit">Sign In</button>
                         </div>
                     </form>
                 </div>

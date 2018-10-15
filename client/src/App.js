@@ -8,8 +8,9 @@ import API from "./utils/API";
 import ModalConductor from "./components/Modal/Modalconductor";
 import Menu from "./components/Menu/Menu";
 import { Input, FormBtn, Textarea } from "./components/Form";
-import { auth } from "./firebase"
-
+import { firebase, auth } from "./firebase"
+// This prevents "App element not defined" warning
+import Modal from "react-modal";
 
 export default class App extends Component {
   constructor() {
@@ -17,8 +18,9 @@ export default class App extends Component {
     this.state = {
       showModal: false,
       loggedin: false,
-      menus: [],
-      submenus: [],
+      uid: "",
+      menu: {},
+      submenus: "",
       items: [],
       currentModal: String,
       name: "",
@@ -27,13 +29,22 @@ export default class App extends Component {
       desc: "",
       note: "",
       // User Authentication
-      email: '',
-      password: ''
+      status: "",
+      email: "",
+      password: ""
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleSignIn = this.handleSignIn.bind(this);
+    this.handleSignUp = this.handleSignUp.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
+  };
+
+  componentWillMount() {
+    this.checkCookie();
+    // This prevents "App element not defined" warning
+    Modal.setAppElement("body");
   };
 
   handleOpenModal() {
@@ -44,29 +55,45 @@ export default class App extends Component {
     this.setState({ showModal: false });
   };
 
+  // Searches the cookies for the specific cookie named
   getCookie = (cname) => {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
+    var ca = decodedCookie.split(";");
     for (var i = 0; i < ca.length; i++) {
       var c = ca[i];
-      while (c.charAt(0) == ' ') {
+      while (c.charAt(0) == " ") {
         c = c.substring(1);
-      }
+      };
       if (c.indexOf(name) == 0) {
         return c.substring(name.length, c.length);
-      }
-    }
+      };
+    };
     return "";
-  }
+  };
 
+  // Checks the loggedin cookie and, if logged in, loads the logged in components and grabs menus from the mongodb.
   checkCookie = () => {
     const cookielog = this.getCookie("loggedin");
     if (cookielog != "") {
       this.setState({ loggedin: true });
+      firebase.auth.onAuthStateChanged( (user) => {
+        if (user) {
+          this.setState({ uid: user.uid })
+          const id = user.uid
+          API.getMenu(id)
+            .then(res => {
+              this.setState({ menu: res.data });
+            })
+            .catch(err => console.log(err));
+        } else {
+          this.setState({ uid: null });
+        }
+      });
     };
   };
 
+  //Sets a cookie with name cname, value cvalue, and for length of days exdays.
   setCookie = (cname, cvalue, exdays) => {
     const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -74,17 +101,22 @@ export default class App extends Component {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
   };
 
-  componentWillMount() {
-    this.checkCookie();
+  createMenu = event => {
+    event.preventDefault();
+    let splitSubmenus = this.state.submenus.split(",");
+    console.log(splitSubmenus);
+    firebase.auth.onAuthStateChanged(function (user) {
+      if (user) {
+        API.createMenu(user.uid, splitSubmenus)
+          .then(function (menu) {
+            console.log(menu);
+            console.log("created a menu!!!");
+          });
+      } else {
+        // No user is signed in.
+      };
+    });
   };
-
-  // loadMenus = () => {
-  //   API.getMenus()
-  //     .then(res => {
-  //       this.setState({ menus: res.data });
-  //     })
-  //     .catch(err => console.log(err));
-  // };
 
   saveMenuItem = event => {
     event.preventDefault();
@@ -113,7 +145,7 @@ export default class App extends Component {
 
   menuClick = event => {
     const { name } = event.target
-    console.log(name);
+    // console.log(name);
     this.setState({
       currentModal: name,
       showModal: true
@@ -148,17 +180,52 @@ export default class App extends Component {
 
   handleSignIn(event) {
     event.preventDefault();
-    this.handleCloseModal()
+    console.log("signing in: " + this.state.email);
     // console.log(this.state.email, this.state.password)
-    auth.doSignInWithEmailAndPassword(this.state.email, this.state.password)
+    auth
+      .doSignInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
         this.setCookie("loggedin", "yes", 30);
         this.setState({
           loggedin: true
         });
-      }
-      )
-  }
+        this.handleCloseModal();
+      })
+      .catch(error => {
+        this.state.status = error.message;
+        alert(this.state.status);
+      });
+  };
+
+  handleSignUp(event) {
+    event.preventDefault();
+    console.log("signing up: " + this.state.email);
+    auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then(() => {
+        this.setCookie("loggedin", "yes", 30);
+        this.setState({
+          loggedin: true
+        });
+        this.handleCloseModal();
+      })
+      .catch(error => {
+        this.state.status = error.message;
+        alert(this.state.status);
+      });
+  };
+
+  handleSignOut(event) {
+    event.preventDefault();
+    console.log("signing out");
+    auth
+      .doSignOut()
+      .then(() => {
+        this.setCookie("loggedin", "no", 0);
+        this.setState({
+          loggedin: false
+        });
+      });
+  };
 
   render() {
     return (
@@ -166,6 +233,8 @@ export default class App extends Component {
         <Nav
           loggedin={this.state.loggedin}
           menuClick={this.menuClick}
+          signOut={this.handleSignOut}
+          openOptions={this.openOptions}
         />
         <Container>
           {/* Login Buttons along top right of page */}
@@ -174,8 +243,19 @@ export default class App extends Component {
             <span>
               <Row>
                 <Column size="12">
+                  {/* onSubmit on in form for testing. Remove when we figure how to use it in nav */}
+                  {/* ONLY IF THEY HAVEN'T ADDED A MENU */}
                   <form>
-                    <h4> Add a menu item</h4>
+                    <h4>Create your Menu</h4>
+                    <div className="form-row">
+                      <div className="form-group col-md-12">
+                        <Input type="text" placeholder="Enter your submenus, separated by comma" onChange={this.handleChange} value={this.state.submenus} name="submenus" />
+                        <FormBtn onClick={this.createMenu}>Add Menu</FormBtn>
+                      </div>
+                    </div>
+                  </form>
+                  <form>
+                    <h4>Add a menu item</h4>
                     <div className="form-row">
                       <div className="form-group col-md-5">
                         <Input type="text" placeholder="Name of dish" onChange={this.handleChange} value={this.state.name} name="name" />
@@ -194,7 +274,7 @@ export default class App extends Component {
                       <div className="form-group col-md-6">
                         <Textarea type="text" placeholder="Description of dish" onChange={this.handleChange} value={this.state.desc} name="desc" />
                         <FormBtn onClick={this.saveMenuItem}>Add</FormBtn>
-                        <FormBtn >Save</FormBtn>
+                        <FormBtn>Save</FormBtn>
                       </div>
                     </div>
                   </form>
@@ -227,6 +307,8 @@ export default class App extends Component {
             handleCloseModal={this.handleCloseModal}
             showModal={this.state.showModal}
             handleSignIn={this.handleSignIn}
+            handleSignOut={this.handleSignOut}
+            handleSignUp={this.handleSignUp}
             handleChange={this.handleChange}
           />
         </Container>
