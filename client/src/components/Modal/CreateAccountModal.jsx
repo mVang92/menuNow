@@ -11,9 +11,9 @@ const CreateAccount = props => {
             shouldCloseOnOverlayClick={true}
             closeTimeoutMS={150}
         >
-            <div className="modal-content">
+            <div className="modal-content border">
                 <div className="modal-body">
-                    <form onSubmit={props.handleSignUp}>
+                    <form className="modalBody" onSubmit={props.handleSignUp}>
                         <div className="modal-header">
                             Sign-Up for a New Account
                         </div>

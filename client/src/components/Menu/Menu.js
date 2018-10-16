@@ -14,7 +14,7 @@ const Menu = props => {
 
                 {/* This Row is The Menu header: Active/Inactive*/}
                 <Row>
-                    <Column size="12" className="bg-primary addRad text-center mx-auto">
+                    <Column size="12" className="bg-primary addRad text-center mx-auto showData">
                         <h3 className="mx-auto my-4 text-center">
                             {props.active ? "Active" : "Inactive"}
                         </h3>
