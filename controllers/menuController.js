@@ -23,9 +23,11 @@ module.exports = {
   },
   update: function(req, res) {
     console.log(`i'm here inside the controller update function`)
-    console.log(req.body);
+    console.log(`REQ BODY:::::::::::::::::::`, req.body);
     db.Menu
-      .findOneAndUpdate({ _id: req.params.id }, req.body)
+      .findOneAndUpdate( 
+        {creator: req.params.id}, {$push: {items: [req.body]}}
+      )
       .then(dbModel => {
         console.log("DB MODEL", dbModel)
         res.json(dbModel)
