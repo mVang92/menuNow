@@ -16,18 +16,18 @@ const Submenu = props => {
 
             {/* Items Column */}
             <Column size="12">
-                {/* props.menu.items.map(item => (
-                    if (item.submenu === selectedSubmenu} {
+                {props.menu.items ? (props.menu.items.map((item, i) => (
+                    (item.itemSubmenu) ? (
                         <Item
-                            name=item.name,
-                            ingredients=item.ingredients,
-                            description= item.description,
-                            price=item.price,
-                            note=item.note
+                            key={i}
+                            name={item.name}
+                            ingredients={item.ingredients}
+                            description={item.description}
+                            price={item.price}
+                            note={item.note}
                         />
-                    })
-
-            */}
+                    ) : null))
+                ) : null}
             </Column>
         </Row>
     );
