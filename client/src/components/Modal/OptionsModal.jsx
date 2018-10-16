@@ -17,7 +17,6 @@ const SignIn = props => {
                     <div className="modal-header">
                         Modify Views
                     </div>
-
                     <div className="modal-body">
                         {/* props.menuparameters.map */}
                         <div className="row">
@@ -25,7 +24,7 @@ const SignIn = props => {
 
                                 <div className="optionsList">
                                     {/* return (<li className='child'> */}
-                                    option{/* id=param.name value=param.name */}
+                                    Option{/* id=param.name value=param.name */}
 
                                     {/* </li> */}
                                 </div>
@@ -35,8 +34,6 @@ const SignIn = props => {
                             </div>
                         </div>
                         {/* end map */}
-
-
                         <div className="row">
                             <div className="col-10 form-group text-right">
                                 <div className="form-check">
@@ -44,7 +41,6 @@ const SignIn = props => {
                                         Client View
                                     </label>
                                 </div>
-
                             </div>
                             <div className="col-2 form-group">
                                 <input type="checkbox" id="gridCheck" />

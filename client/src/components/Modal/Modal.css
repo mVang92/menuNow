@@ -4,6 +4,6 @@
 
 .ReactModal__Content {
     width: 500px;
-    margin: auto;
-    margin-top: 15%;
+    margin-top: 10%;
+    box-shadow: 3px 3px 3px 1px #888888;
 }
