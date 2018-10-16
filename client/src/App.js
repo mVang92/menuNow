@@ -112,13 +112,12 @@ export default class App extends Component {
     event.preventDefault();
     const id = this.state.uid;
     const data = {
-      submenu: this.state.submenu,
       name: this.state.name,
       ing: this.state.ing,
       desc: this.state.desc,
       price: this.state.price,
       note: this.state.note,
-      submenu: this.state.itemSubmenu
+      itemSubmenu: this.state.itemSubmenu
     };
     console.log(`MENU ITEM ID:`, id)
     console.log(`MENU ITEM DATA`, data)

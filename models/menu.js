@@ -7,7 +7,7 @@ const menuSchema = new Schema({
     type: String
   }],
   items: [{
-    submenu: { type: String },
+    itemSubmenu: { type: String },
     name: { type: String },
     ingredients: { type: String },
     description: { type: String },

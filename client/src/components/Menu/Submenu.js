@@ -10,7 +10,7 @@ const Submenu = props => {
             <Column size="12" className="bg-primary text-center mx-auto">
                 <div className="mx-auto my-4 text-center" id="submenuName">
                     {/* this value should change based upon the selected submenu */}
-                    {props.menu.submenu}
+                    {props.menu.submenu ? (props.menu.submenu) : (null)}
                 </div>
             </Column>
 
