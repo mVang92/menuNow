@@ -169,7 +169,6 @@ export default class App extends Component {
 
   handleSignIn(event) {
     event.preventDefault();
-<<<<<<< HEAD
     console.log("signing in: " + this.state.email);
     auth
       .doSignInWithEmailAndPassword(this.state.email, this.state.password)
@@ -216,32 +215,6 @@ export default class App extends Component {
         this.setState({ loggedin: false });
       });
   };
-=======
-    this.handleCloseModal();
-    // console.log(this.state.email, this.state.password)
-    auth.doSignInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => {
-        this.setState({
-          loggedin: true
-        });
-      }
-      )
-  }
-
-  handleSignUp(event) {
-    event.preventDefault();
-    // this.handleCloseModal();
-    console.log("email: " + this.state.email);
-    console.log("password: " + this.state.password);
-    auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
-      // .then(() => {
-      //   this.setState({
-      //     loggedin: true
-      //   });
-      // }
-      // )
-  }
->>>>>>> stash
 
   render() {
     return (
@@ -329,10 +302,7 @@ export default class App extends Component {
             handleCloseModal={this.handleCloseModal}
             showModal={this.state.showModal}
             handleSignIn={this.handleSignIn}
-<<<<<<< HEAD
             handleSignOut={this.handleSignOut}
-=======
->>>>>>> stash
             handleSignUp={this.handleSignUp}
             handleChange={this.handleChange}
           />
