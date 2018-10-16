@@ -15,24 +15,17 @@ const Menu = props => {
                 {/* This Row is The Menu header: Active/Inactive*/}
                 <Row>
                     <Column size="12" className="bg-primary addRad text-center mx-auto">
-                        <strong className="mx-auto my-4">
-                            {props.menu}
-                        </strong>
+                        <h3 className="mx-auto my-4 text-center">
+                            {props.active ? "Active" : "Inactive"}
+                        </h3>
                     </Column>
                 </Row>
 
                 {/* This Row will fill with the submenu. */}
-                <Row>
                     <Submenu
+                        menu={props.menu}
                     // pass in submenu title and submenu items as props
                     />
-
-                </Row>
-            </Column>
-
-            {/* This row will fill instead for any users that aren"t logged in */}
-            <Column size="12">
-
             </Column>
 
         </Row>
