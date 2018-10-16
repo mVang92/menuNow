@@ -22,6 +22,10 @@ const SignIn = props => {
                             <br></br>
                             <br></br>
                             <input type="password" value={props.password} name="password" onChange={props.handleChange} placeholder="Password"></input>
+                            <div className="row">
+                                <div id="error" className="col-12 text-danger">
+                                </div>
+                            </div>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" onClick={props.handleCloseModal} data-dismiss="modal">Close</button>

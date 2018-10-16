@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Nav from "./components/Nav";
-import Jumbotron from "./components/Jumbotron";
+// import Jumbotron from "./components/Jumbotron";
 import Container from "./Container";
 import Row from "./Row";
 import Column from "./Column";
@@ -29,7 +29,7 @@ export default class App extends Component {
       desc: "",
       note: "",
       // User Authentication
-      status: "",
+      status: "dfdf",
       email: "",
       password: ""
     };
@@ -42,9 +42,17 @@ export default class App extends Component {
   };
 
   componentWillMount() {
-    this.checkCookie();
     // This prevents "App element not defined" warning
     Modal.setAppElement("body");
+    this.onAuthStateChanged();
+    // Clears values inside input boxes
+    this.setState({
+      name: "",
+      price: "",
+      desc: "",
+      ing: "",
+      note: ""
+    });
   };
 
   handleOpenModal() {
@@ -55,50 +63,19 @@ export default class App extends Component {
     this.setState({ showModal: false });
   };
 
-  // Searches the cookies for the specific cookie named
-  getCookie = (cname) => {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(";");
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == " ") {
-        c = c.substring(1);
+  onAuthStateChanged = () => {
+    const bindThis = this;
+    firebase.auth.onAuthStateChanged(function (user) {
+      if (user) {
+        console.log(user.uid);
+        bindThis.setState({ loggedin: true });
+        var userName = document.createTextNode(user.email);
+        document.getElementById("user").appendChild(userName);
+        //need to call API.getMenu or something like that or a function that does the same (loadMenus?) while passing in user.uid as the required param to search the db for
+      } else {
+        console.log("Please sign-in or sign-up.");
       };
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      };
-    };
-    return "";
-  };
-
-  // Checks the loggedin cookie and, if logged in, loads the logged in components and grabs menus from the mongodb.
-  checkCookie = () => {
-    const cookielog = this.getCookie("loggedin");
-    if (cookielog != "") {
-      this.setState({ loggedin: true });
-      firebase.auth.onAuthStateChanged( (user) => {
-        if (user) {
-          this.setState({ uid: user.uid })
-          const id = user.uid
-          API.getMenu(id)
-            .then(res => {
-              this.setState({ menu: res.data });
-            })
-            .catch(err => console.log(err));
-        } else {
-          this.setState({ uid: null });
-        }
-      });
-    };
-  };
-
-  //Sets a cookie with name cname, value cvalue, and for length of days exdays.
-  setCookie = (cname, cvalue, exdays) => {
-    const d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    const expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    });
   };
 
   createMenu = event => {
@@ -133,6 +110,7 @@ export default class App extends Component {
       .then(function () {
         console.log("saved an item!!!");
       });
+    this.componentWillMount();
   };
 
   handleChange = event => {
@@ -175,25 +153,24 @@ export default class App extends Component {
     };
 
     console.log(data);
-    API.save(data).then(() => { this.loadArticles() });
+    API.save(data).then(() => { this.loadMenus() });
   };
 
   handleSignIn(event) {
     event.preventDefault();
     console.log("signing in: " + this.state.email);
-    // console.log(this.state.email, this.state.password)
     auth
       .doSignInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
-        this.setCookie("loggedin", "yes", 30);
-        this.setState({
-          loggedin: true
-        });
+        this.setState({ loggedin: true });
+        this.setState({ status: "" });
         this.handleCloseModal();
       })
       .catch(error => {
-        this.state.status = error.message;
-        alert(this.state.status);
+        this.setState({ status: error.message })
+        var error = document.createTextNode(this.state.status);
+        document.getElementById("error").innerHTML = "";
+        document.getElementById("error").appendChild(error);
       });
   };
 
@@ -202,15 +179,15 @@ export default class App extends Component {
     console.log("signing up: " + this.state.email);
     auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
-        this.setCookie("loggedin", "yes", 30);
-        this.setState({
-          loggedin: true
-        });
+        this.setState({ loggedin: true });
+        this.setState({ status: "" });
         this.handleCloseModal();
       })
       .catch(error => {
-        this.state.status = error.message;
-        alert(this.state.status);
+        this.setState({ status: error.message })
+        var error = document.createTextNode(this.state.status);
+        document.getElementById("error").innerHTML = "";
+        document.getElementById("error").appendChild(error);
       });
   };
 
@@ -220,10 +197,7 @@ export default class App extends Component {
     auth
       .doSignOut()
       .then(() => {
-        this.setCookie("loggedin", "no", 0);
-        this.setState({
-          loggedin: false
-        });
+        this.setState({ loggedin: false });
       });
   };
 
@@ -239,8 +213,9 @@ export default class App extends Component {
         <Container>
           {/* Login Buttons along top right of page */}
           {/* if State.loggedin load menu portion else display home page stuff */}
-          {this.state.loggedin == true ? (
+          {this.state.loggedin === true ? (
             <span>
+              <p id="user">Logged in as: </p>
               <Row>
                 <Column size="12">
                   {/* onSubmit on in form for testing. Remove when we figure how to use it in nav */}
@@ -274,7 +249,6 @@ export default class App extends Component {
                       <div className="form-group col-md-6">
                         <Textarea type="text" placeholder="Description of dish" onChange={this.handleChange} value={this.state.desc} name="desc" />
                         <FormBtn onClick={this.saveMenuItem}>Add</FormBtn>
-                        <FormBtn>Save</FormBtn>
                       </div>
                     </div>
                   </form>
@@ -300,7 +274,6 @@ export default class App extends Component {
               </div>
             )
           }
-
           <ModalConductor
             currentModal={this.state.currentModal}
             handleOpenModal={this.handleOpenModal}

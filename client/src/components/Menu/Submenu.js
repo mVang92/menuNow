@@ -1,7 +1,7 @@
-import React from 'react';
-import Row from './../../Row';
-import Column from './../../Column';
-import Item from './Item';
+import React from "react";
+import Row from "./../../Row";
+import Column from "./../../Column";
+import Item from "./Item";
 
 const Submenu = props => {
     return (
@@ -24,9 +24,10 @@ const Submenu = props => {
             */}
 
                 <Item
-                name="Name"
+                name={props.submenus}
                 price="Price"
-                params={props.items.params} //all the user-defined parameters
+                //all the user-defined parameters
+                // params={props.items.params}
                 />
             </Column>
         </Row>
