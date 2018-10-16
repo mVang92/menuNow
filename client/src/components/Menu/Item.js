@@ -16,7 +16,7 @@ const Item = props => {
             </Column>
 
             <Column size="2">
-                {props.price}
+                ${props.price}
             </Column>
 
             {/* The rest of the item props should be passed in as an array that can be iterated through.

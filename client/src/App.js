@@ -11,6 +11,7 @@ import Submenu from "./components/Menu/Submenu";
 import Item from "./components/Menu/Item";
 import { Input, FormBtn, Textarea } from "./components/Form";
 import { firebase, auth } from "./firebase"
+import "./index.css";
 // This prevents "App element not defined" warning
 import Modal from "react-modal";
 
@@ -231,13 +232,13 @@ export default class App extends Component {
           {/* Login Buttons along top right of page */}
           {/* if State.loggedin load menu portion else display home page stuff */}
           {this.state.loggedin === true ? (
-            <span>
-              <p id="user">Logged in as: </p>
+            <div className="box">
+              <p id="user" className="text-center">Welcome, </p>
               <Row>
                 <Column size="12">
                   {/* onSubmit on in form for testing. Remove when we figure how to use it in nav */}
                   {/* ONLY IF THEY HAVEN'T ADDED A MENU */}
-                  <form>
+                  <form className="form">
                     <h4>Create your Menu</h4>
                     <div className="form-row">
                       <div className="form-group col-md-12">
@@ -246,7 +247,7 @@ export default class App extends Component {
                       </div>
                     </div>
                   </form>
-                  <form>
+                  <form className="form">
                     <h4>Add a menu item</h4>
                     <div className="form-row">
                       <div className="form-group col-md-5">
@@ -274,23 +275,25 @@ export default class App extends Component {
                   </form>
                 </Column>
               </Row>
-              <Row>
-                <Column size="6">
-                  <Menu
-                    menu={this.state.menu}
-                    active={true}
-                  />
+              <div className="form">
+                <Row>
+                  <Column size="6">
+                    <Menu
+                      menu={this.state.menu}
+                      active={true}
+                    />
 
-                </Column>
-                <Column size="6">
-                  <Menu
-                    menu={this.state.menu}
-                    active={false}
-                  />
+                  </Column>
+                  <Column size="6">
+                    <Menu
+                      menu={this.state.menu}
+                      active={false}
+                    />
 
-                </Column>
-              </Row>
-            </span>
+                  </Column>
+                </Row>
+              </div>
+            </div>
           ) : (
               <div>
                 {/* Else statement for state.loggedin goes here */}
