@@ -12,5 +12,5 @@ router
   .get(menuController.findOne)
   .put(menuController.update)
   .delete(menuController.remove);
-
+  
 module.exports = router;
