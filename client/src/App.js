@@ -28,6 +28,7 @@ export default class App extends Component {
       ing: "",
       desc: "",
       note: "",
+      itemSubmenu: "",
       // User Authentication
       status: "",
       email: "",
@@ -65,13 +66,15 @@ export default class App extends Component {
 
   onAuthStateChanged = () => {
     const bindThis = this;
-    firebase.auth.onAuthStateChanged(function (user) {
+    firebase.auth.onAuthStateChanged(user => {
       if (user) {
         console.log(user.uid);
         bindThis.setState({ loggedin: true });
         var userName = document.createTextNode(user.email);
         document.getElementById("user").appendChild(userName);
+        const id = user.uid;
         //need to call API.getMenu or something like that or a function that does the same (loadMenus?) while passing in user.uid as the required param to search the db for
+        API.getMenu(id).then(res => { this.setState({ menu: res.data, uid: user.uid })})
       } else {
         console.log("Please sign-in or sign-up.");
       };
@@ -105,20 +108,19 @@ export default class App extends Component {
 
   saveMenuItem = event => {
     event.preventDefault();
+    const id = this.state.uid;
     const data = {
-      _creator: null,
+      submenu: this.state.submenu,
       name: this.state.name,
       ing: this.state.ing,
       desc: this.state.desc,
       price: this.state.price,
-      note: this.state.note
+      note: this.state.note,
+      submenu: this.state.itemSubmenu
     };
-    API
-      .save(data)
-      .then(function () {
-        console.log("saved an item!!!");
-      });
-    this.componentWillMount();
+    console.log(`MENU ITEM ID:`, id)
+    console.log(`MENU ITEM DATA`, data)
+    API.update(id, data)
   };
 
   handleChange = event => {
@@ -255,10 +257,13 @@ export default class App extends Component {
                       </div>
                     </div>
                     <div className="form-row">
-                      <div className="form-group col-md-6">
+                      <div className="form-group col-md-4">
+                        <Input type="text" placeholder="Which submenu does this belong?" onChange={this.handleChange} value={this.state.itemSubmenu} name="itemSubmenu" />
+                      </div>
+                      <div className="form-group col-md-4">
                         <Textarea type="text" placeholder="Add a note about this item" onChange={this.handleChange} value={this.state.note} name="note" />
                       </div>
-                      <div className="form-group col-md-6">
+                      <div className="form-group col-md-4">
                         <Textarea type="text" placeholder="Description of dish" onChange={this.handleChange} value={this.state.desc} name="desc" />
                         <FormBtn onClick={this.saveMenuItem}>Add</FormBtn>
                       </div>
