@@ -1,6 +1,5 @@
 import React from "react";
 import ReactModal from "react-modal";
-import "./Modal.css";
 
 const SignIn = props => {
 
@@ -11,9 +10,9 @@ const SignIn = props => {
             shouldCloseOnOverlayClick={true}
             closeTimeoutMS={150}
         >
-            <div className="modal-content">
+            <div className="modal-content border">
                 <div className="modal-body">
-                    <form onSubmit={props.handleSignIn}>
+                    <form className="modalBody" onSubmit={props.handleSignIn}>
                         <div className="modal-header">
                             Sign-In to Your Account
                         </div>
@@ -22,6 +21,10 @@ const SignIn = props => {
                             <br></br>
                             <br></br>
                             <input type="password" value={props.password} name="password" onChange={props.handleChange} placeholder="Password"></input>
+                            <div className="row">
+                                <div id="error" className="col-12 text-danger">
+                                </div>
+                            </div>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" onClick={props.handleCloseModal} data-dismiss="modal">Close</button>

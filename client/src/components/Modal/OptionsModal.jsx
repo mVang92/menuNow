@@ -1,6 +1,5 @@
 import React from "react";
 import ReactModal from "react-modal";
-import "./Modal.css";
 
 const SignIn = props => {
 
@@ -13,41 +12,43 @@ const SignIn = props => {
             onRequestClose={() => { props.handleCloseModal() }}
         >
             <div className="modal-content">
-                <div className="modal-body">
-                    <form onSubmit={props.handleSignIn}>
-                        <div className="modal-header">
-                            Modify Views
-                        </div>
-                        <div className="modal-footer">
-                            <div className="form-group">
+                <form onSubmit={props.handleSignIn}>
+                    <div className="modal-header">
+                        Modify Views
+                    </div>
+                    <div className="modal-body">
+                        {/* props.menuparameters.map */}
+                        <div className="row">
+                            <div className="col-10 text-right">
 
-                                {/* props.menuparameters.map */}
-                                <div className="form-check form-check-inline">
-                                    <ul className="optionsList">
-                                        {/* return (<li className='child'> */}
-                                        <label>option</label>{/* id=param.name value=param.name */}
-                                        <input type='checkbox'>
+                                <div className="optionsList">
+                                    {/* return (<li className='child'> */}
+                                    Option{/* id=param.name value=param.name */}
 
-                                        </input>
-                                        {/* </li> */}
-                                    </ul>
-
+                                    {/* </li> */}
                                 </div>
-                                {/* end map */}
-
+                            </div>
+                            <div className="col-2">
+                                <input type="checkbox"></input>
+                            </div>
+                        </div>
+                        {/* end map */}
+                        <div className="row">
+                            <div className="col-10 form-group text-right">
                                 <div className="form-check">
                                     <label>
                                         Client View
                                     </label>
-                                    <input className="form-check-input" type="checkbox" id="gridCheck">
-                                    </input>
                                 </div>
                             </div>
+                            <div className="col-2 form-group">
+                                <input type="checkbox" id="gridCheck" />
+                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
-        </ReactModal>
+        </ReactModal >
     );
 };
 
