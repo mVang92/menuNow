@@ -7,6 +7,8 @@ import Column from "./Column";
 import API from "./utils/API";
 import ModalConductor from "./components/Modal/Modalconductor";
 import Menu from "./components/Menu/Menu";
+import Submenu from "./components/Menu/Submenu";
+import Item from "./components/Menu/Item";
 import { Input, FormBtn, Textarea } from "./components/Form";
 import { firebase, auth } from "./firebase"
 // This prevents "App element not defined" warning
@@ -74,7 +76,7 @@ export default class App extends Component {
         document.getElementById("user").appendChild(userName);
         const id = user.uid;
         //need to call API.getMenu or something like that or a function that does the same (loadMenus?) while passing in user.uid as the required param to search the db for
-        API.getMenu(id).then(res => { this.setState({ menu: res.data, uid: user.uid })})
+        API.getMenu(id).then(res => { this.setState({ menu: res.data, uid: user.uid }) })
       } else {
         console.log("Please sign-in or sign-up.");
       };
@@ -189,8 +191,8 @@ export default class App extends Component {
     console.log("signing up: " + this.state.email);
     auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
-        this.setState({ 
-          loggedin: true, 
+        this.setState({
+          loggedin: true,
           status: "",
           submenus: "Appetizers, Entrées, Dessert"
         });
@@ -273,13 +275,17 @@ export default class App extends Component {
               </Row>
               <Row>
                 <Column size="6">
-                  <h3 className="heading">Active Menu Goes Here</h3>
-                  {/* Add a menu component for the active menu */}
+                  <Menu
+                    menu={this.state.menu}
+                    active={true}
+                  />
 
                 </Column>
                 <Column size="6">
-                  <h3 className="heading">Removed Menu Goes Here</h3>
-                  {/* Add a Menu Component for the removed menu */}
+                  <Menu
+                    menu={this.state.menu}
+                    active={false}
+                  />
 
                 </Column>
               </Row>
