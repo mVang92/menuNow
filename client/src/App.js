@@ -54,7 +54,8 @@ export default class App extends Component {
       price: "",
       desc: "",
       ing: "",
-      note: ""
+      note: "",
+      itemSubmenu: ""
     });
   };
 
@@ -122,7 +123,8 @@ export default class App extends Component {
     };
     console.log(`MENU ITEM ID:`, id)
     console.log(`MENU ITEM DATA`, data)
-    API.update(id, data)
+    API.update(id, data);
+    this.componentWillMount();
   };
 
   handleChange = event => {
