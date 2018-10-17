@@ -50,11 +50,11 @@ const Item = props => {
             <Row>
                 {props.active ? (
                     <Column size="12">
-                        <button type="button" className="ml-0 mkInactive btn btn-sm btn-block btn-primary">Drop</button>
+                        <button type="button" data-active="false" className="ml-0 btn btn-sm btn-block btn-primary">Drop</button>
                     </Column>
                 ) : (
                         <Column size="12">
-                            <button type="button" className="ml-0 mkActive btn btn-sm btn-block btn-success">Add</button>
+                            <button type="button" data-active="true" className="ml-0 mkActive btn btn-sm btn-block btn-success">Add</button>
                         </Column>)
                 }
 
