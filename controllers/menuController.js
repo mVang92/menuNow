@@ -22,11 +22,21 @@ module.exports = {
       .catch(err => console.log(err));
   },
   update: function(req, res) {
-    console.log(`i'm here inside the controller update function`)
-    console.log(`REQ BODY:::::::::::::::::::`, req.body);
     db.Menu
       .findOneAndUpdate( 
         {creator: req.params.id}, {$push: {items: [req.body]}}
+      )
+      .then(dbModel => {
+        console.log("DB MODEL", dbModel)
+        res.json(dbModel)
+      })
+      .catch(err => res.status(422).json(err));
+  },
+  changeStatus: function(req, res) {
+    console.log('here inside of the changeStatus function')
+    db.Menu
+      .findOneAndUpdate( 
+        {creator: req.params.id}, {status: req.body}
       )
       .then(dbModel => {
         console.log("DB MODEL", dbModel)

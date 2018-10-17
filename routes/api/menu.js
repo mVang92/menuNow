@@ -11,6 +11,7 @@ router
   .route("/:id")
   .get(menuController.findOne)
   .put(menuController.update)
+  .put(menuController.changeStatus)
   .delete(menuController.remove);
   
 module.exports = router;

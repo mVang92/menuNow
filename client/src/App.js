@@ -137,7 +137,20 @@ export default class App extends Component {
       });
     this.componentWillMount();
   };
-
+  updateStatus = event => {
+    event.preventDefault();
+    const id = this.state.uid;
+    const me = this;
+    console.log(event);
+    // const data = {
+    //   status: !this.state.active,
+    // };
+    // API.update(id, data)
+    //   .then(function (item) {
+    //     me.onAuthStateChanged();
+    //   });
+    this.componentWillMount();
+  };
   // Generic input field modifier -> state
   handleChange = event => {
     let { name, value } = event.target;
