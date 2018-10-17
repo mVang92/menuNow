@@ -142,7 +142,7 @@ export default class App extends Component {
     let { name, value } = event.target;
     this.setState({
       [name]: value,
-    })
+    });
     // console.log(name, value);
   };
 

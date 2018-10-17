@@ -13,11 +13,11 @@ const Item = props => {
             */}
 
                 <Column size="10">
-                    {props.name}
+                    <strong>{props.name}</strong>
                 </Column>
 
                 <Column size="2">
-                    ${props.price}
+                    <strong>${props.price}</strong>
                 </Column>
             </Row>
             <Row>
@@ -41,7 +41,7 @@ const Item = props => {
             <Row>
                 {props.note ? (
                     <Column size="12">
-                        Notes: {props.note}
+                        Notes: <i>{props.note}</i>
                     </Column>
                 ) :
                     null
@@ -50,12 +50,12 @@ const Item = props => {
             <Row>
                 {props.active ? (
                     <Column size="12">
-                        <button type="button" className=" ml-0 mkInactive btn btn-sm btn-block btn-primary">Drop</button>
+                        <button type="button" className="ml-0 mkInactive btn btn-sm btn-block btn-primary">Drop</button>
                     </Column>
                 ) : (
-                    <Column size="12">
-                        <button type="button" className=" ml-0 mkActive btn btn-sm btn-block btn-success">Add</button>
-                    </Column>)
+                        <Column size="12">
+                            <button type="button" className="ml-0 mkActive btn btn-sm btn-block btn-success">Add</button>
+                        </Column>)
                 }
 
                 {/* If props.settingForClientView
