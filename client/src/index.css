@@ -1,5 +1,5 @@
 /* div {
-  border: 1px solid grey;
+  border: 1px solid red;
 } */
 
 body {
@@ -8,6 +8,10 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Montserrat", sans-serif;
+}
+
+#appName {
+  font-size: 72px;
 }
 
 form {
@@ -78,7 +82,47 @@ form {
   padding: 10px;
   border-radius: 5px 5px 5px 5px;
   box-shadow: 1px 1px 7px 1px rgb(32, 32, 32);
+}
 
+#items {
+  transition-duration: 0.4s;
+  border: 1px solid rgb(235, 235, 235);
+  border-radius: 5px 5px 5px 5px;
+  margin: 5px;
+  padding: 5px;
+  background: rgb(235, 235, 235);
+}
+
+#items:hover {
+  transition-duration: 0.1s;
+  border: 1px solid black;
+}
+
+#notLoggedIn {
+  transition-duration: 0.5s;
+  margin: auto;
+  font-size: 36px;
+  border: 1px solid black;
+  border-radius: 5px 5px 5px 5px;
+  background: rgba(212, 212, 212, 0.6);
+  box-shadow: 3px 5px 15px 5px rgb(32, 32, 32);
+  margin-top: 5%;
+  height: 400px;
+  width: 90%;
+}
+
+.carousel-inner {
+  text-align: center;
+  color: white;
+  text-shadow: 2px 2px 8px black;
+}
+
+.carousel-inner {
+  height: 200px;
+  top: 100px;
+  background: grey;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
 }
 
 .underline {

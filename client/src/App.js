@@ -7,6 +7,7 @@ import Column from "./Column";
 import API from "./utils/API";
 import ModalConductor from "./components/Modal/Modalconductor";
 import Menu from "./components/Menu/Menu";
+import NotLoggedIn from "./components/Menu/NotLoggedIn";
 import { Input, FormBtn, Textarea } from "./components/Form";
 import { firebase, auth } from "./firebase"
 import "./index.css";
@@ -31,7 +32,7 @@ export default class App extends Component {
       note: "",
       itemSubmenu: "",
       // User Authentication
-      status: "",
+      message: "",
       email: "",
       password: ""
     };
@@ -75,8 +76,9 @@ export default class App extends Component {
       if (user) {
         console.log(user.uid);
         bindThis.setState({ loggedin: true });
-        var userName = document.createTextNode(user.email);
-        document.getElementById("user").appendChild(userName);
+        let userName = document.createTextNode(user.email);
+        document.getElementById("email").innerHTML = "";
+        document.getElementById("email").appendChild(userName);
         const id = user.uid;
         //need to call API.getMenu or something like that or a function that does the same (loadMenus?) while passing in user.uid as the required param to search the db for
         API.getMenu(id).then(res => { this.setState({ menu: res.data, uid: user.uid }) })
@@ -91,13 +93,13 @@ export default class App extends Component {
     if (event) {
       event.preventDefault();
     };
-
     let splitSubmenus = this.state.submenus.split(",");
+    const bindThis = this;
+    this.setState({ submenus: "" });
     // Cleans any extra padding around items
     for (let i = 0; i < splitSubmenus.length; i++) {
       splitSubmenus[i] = splitSubmenus[i].trim();
     };
-
     console.log(splitSubmenus);
     firebase.auth.onAuthStateChanged(function (user) {
       if (user) {
@@ -105,6 +107,7 @@ export default class App extends Component {
           .then(function (menu) {
             console.log(menu);
             console.log("created a menu!!!");
+            bindThis.componentWillMount();
           });
       } else {
         // No user is signed in.
@@ -128,9 +131,10 @@ export default class App extends Component {
     console.log(`MENU ITEM ID:`, id)
     console.log(`MENU ITEM DATA`, data)
     API.update(id, data)
-      .then(function(item) {
+      .then(function (item) {
         me.onAuthStateChanged();
-      })
+      });
+    this.componentWillMount();
   };
 
   // Generic input field modifier -> state
@@ -139,7 +143,7 @@ export default class App extends Component {
     this.setState({
       [name]: value,
     })
-    console.log(name, value);
+    // console.log(name, value);
   };
 
   // When clicking the nav menu, sets currentModal to pull the appropriate modal
@@ -159,7 +163,7 @@ export default class App extends Component {
     let selectedArticle = this.state.articles.filter(article => id === article._id);
     // Remove the selected Article from the current Articles state (to remove it from the list)
 
-    for (var i = 0; i < this.state.articles.length - 1; i++) {
+    for (let i = 0; i < this.state.articles.length - 1; i++) {
       if (this.state.articles[i]._id === id) {
         this.state.articles.splice(i, 1);
         console.log("removed from searched list");
@@ -182,31 +186,34 @@ export default class App extends Component {
   // Called when user submits the login modal
   handleSignIn(event) {
     event.preventDefault();
-    console.log("signing in: " + this.state.email);
     auth
       .doSignInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
-        this.setState({ loggedin: true });
-        this.setState({ status: "" });
+        console.log("signing in: " + this.state.email);
+        this.setState({
+          loggedin: true,
+          message: ""
+        });
         this.handleCloseModal();
       })
       .catch(error => {
-        this.setState({ status: error.message })
-        var error = document.createTextNode(this.state.status);
+        this.setState({ message: error.message })
+        const message = document.createTextNode(this.state.message);
         document.getElementById("error").innerHTML = "";
-        document.getElementById("error").appendChild(error);
+        document.getElementById("error").appendChild(message);
       });
   };
 
   //Called when the user submits the sign up modal
   handleSignUp(event) {
     event.preventDefault();
-    console.log("signing up: " + this.state.email);
-    auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
+    auth
+      .doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
+        console.log("signing up: " + this.state.email);
         this.setState({
           loggedin: true,
-          status: "",
+          message: "",
           submenus: "Appetizers, Entrées, Dessert"
         });
         // Sets the submenu state to three default menus upon creation and adds default menus to each user
@@ -214,10 +221,10 @@ export default class App extends Component {
         this.handleCloseModal();
       })
       .catch(error => {
-        this.setState({ status: error.message })
-        var error = document.createTextNode(this.state.status);
+        this.setState({ message: error.message })
+        const message = document.createTextNode(this.state.message);
         document.getElementById("error").innerHTML = "";
-        document.getElementById("error").appendChild(error);
+        document.getElementById("error").appendChild(message);
       });
   };
 
@@ -228,7 +235,11 @@ export default class App extends Component {
     auth
       .doSignOut()
       .then(() => {
-        this.setState({ loggedin: false });
+        this.setState({
+          loggedin: false,
+          email: "",
+          password: ""
+        });
       });
   };
 
@@ -246,7 +257,7 @@ export default class App extends Component {
           {/* if State.loggedin load menu portion else display home page stuff */}
           {this.state.loggedin === true ? (
             <div className="box">
-              <p id="user" className="text-center">Welcome, </p>
+              <p id="user" className="text-center">Welcome, <span id="email"></span></p>
               <Row>
                 <Column size="12">
                   {/* onSubmit on in form for testing. Remove when we figure how to use it in nav */}
@@ -295,15 +306,12 @@ export default class App extends Component {
                       menu={this.state.menu}
                       active={true}
                     />
-
                   </Column>
-                  
                   <Column size="6">
                     <Menu
                       menu={this.state.menu}
                       active={false}
                     />
-
                   </Column>
                 </Row>
               </div>
@@ -311,7 +319,9 @@ export default class App extends Component {
           ) : (
               <div>
                 {/* Else statement for state.loggedin goes here */}
-                <h3 className="text-center">The Not Logged In Section Will Go Here</h3>
+                <NotLoggedIn>
+                  
+                </NotLoggedIn>
               </div>
             )
           }
