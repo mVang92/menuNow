@@ -1,8 +1,8 @@
 import React from "react";
 import ReactModal from "react-modal";
 
-const CreateAccount = props => {
-    // console.log(props)
+const SignUp = props => {
+
     return (
         <ReactModal
             isOpen={props.showModal}
@@ -38,4 +38,4 @@ const CreateAccount = props => {
     );
 };
 
-export default CreateAccount;
+export default SignUp;

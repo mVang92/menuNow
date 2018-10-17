@@ -1,7 +1,7 @@
-import React from 'react';
-import Row from './../../Row';
-import Column from './../../Column';
-import './Menu.css';
+import React from "react";
+import Row from "./../../Row";
+import Column from "./../../Column";
+import "./Menu.css";
 import Submenu from "./Submenu";
 
 const Menu = props => {
