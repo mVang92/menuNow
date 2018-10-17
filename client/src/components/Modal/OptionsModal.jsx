@@ -11,44 +11,53 @@ const SignIn = props => {
             closeTimeoutMS={150}
             onRequestClose={() => { props.handleCloseModal() }}
         >
-            <div className="modal-content">
-                <form onSubmit={props.handleSignIn}>
-                    <div className="modal-header">
-                        Modify Views
-                    </div>
-                    <div className="modal-body">
-                        {/* props.menuparameters.map */}
-                        <div className="row">
-                            <div className="col-10 text-right">
+            <div className="modal-content optionBox">
+                <div className="modal-body">
+                    <form className="options" onSubmit={props.handleSignIn}>
+                        <div className="modal-header">
+                            <strong>Options</strong>
+                        </div>
+                        <div className="modal-body">
+                            {/* props.menuparameters.map */}
+                            <div className="row">
+                                <div className="col-10 text-right">
+                                    <div className="optionsList">
+                                        <label>
+                                            {/* return (<li className='child'> */}
+                                            Option{/* id=param.name value=param.name */}
 
-                                <div className="optionsList">
-                                    {/* return (<li className='child'> */}
-                                    Option{/* id=param.name value=param.name */}
-
-                                    {/* </li> */}
+                                            {/* </li> */}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="col-2">
+                                    <input type="checkbox" disabled />
                                 </div>
                             </div>
-                            <div className="col-2">
-                                <input type="checkbox"></input>
-                            </div>
-                        </div>
-                        {/* end map */}
-                        <div className="row">
-                            <div className="col-10 form-group text-right">
-                                <div className="form-check">
-                                    <label>
-                                        Client View
-                                    </label>
+                            {/* end map */}
+                            <div className="row">
+                                <div className="col-10 form-group text-right">
+                                    <div className="clientView">
+                                        <label>
+                                            Client View
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="col-2 form-group">
+                                    <input type="checkbox" id="gridCheck" disabled />
                                 </div>
                             </div>
-                            <div className="col-2 form-group">
-                                <input type="checkbox" id="gridCheck" />
+                            <div className="row">
+                                <div className="col-10 text-right">
+                                    <a id="site" href="#">App</a>
+                                </div>
+                                <div className="col-2 form-group"></div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </ReactModal >
+        </ReactModal>
     );
 };
 
