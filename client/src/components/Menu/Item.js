@@ -10,8 +10,8 @@ const Item = props => {
             default to a col-12 for all props other than price and item_name. These should be on the same line by default
             Ideally, col sizing should be customizable in the settings to 3,4,6,12.
             */}
-            
-            <Column size="10">
+
+            <Column size="9">
                 {props.name}
             </Column>
 
@@ -19,12 +19,47 @@ const Item = props => {
                 ${props.price}
             </Column>
 
-            {/* The rest of the item props should be passed in as an array that can be iterated through.
-            props.altVals.map
-                <Column size="12">
-                    {val.name}
+            {props.description ? (
+                <Column size="11">
+                    <div className="ml-4">
+                        {props.description}
+                    </div>
                 </Column>
-        */}
+            ) :
+                null
+            }
+
+            {props.ingredients ? (
+                <Column size="11">
+                    <div className="ml-4">
+                        {props.ingredients}
+                    </div>
+                </Column>
+            ) :
+                null
+            }
+
+
+            {props.note ? (
+                <Column size="11">
+                    <div className="ml-4">
+                        {props.note}
+                    </div>
+                </Column>
+            ) :
+                null
+            }
+
+            {props.active ? (
+                <Column size="12">
+
+                    <button type="button" className=" ml-0 mkInactive btn btn-sm btn-block btn-primary">Drop</button>
+                </Column>
+            ) : (
+                <Column size="12">
+                    <button type="button" className=" ml-0 mkActive btn btn-sm btn-block btn-success">Add</button>
+                </Column>                )
+            }
 
             {/* If props.settingForClientView
             load only selected client props
