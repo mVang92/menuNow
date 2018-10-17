@@ -7,8 +7,6 @@ import Column from "./Column";
 import API from "./utils/API";
 import ModalConductor from "./components/Modal/Modalconductor";
 import Menu from "./components/Menu/Menu";
-import Submenu from "./components/Menu/Submenu";
-import Item from "./components/Menu/Item";
 import { Input, FormBtn, Textarea } from "./components/Form";
 import { firebase, auth } from "./firebase"
 import "./index.css";
@@ -59,14 +57,17 @@ export default class App extends Component {
     });
   };
 
+  //opens modal
   handleOpenModal() {
     this.setState({ showModal: true });
   };
 
+  //closes modal
   handleCloseModal() {
     this.setState({ showModal: false });
   };
 
+  // setting relevant logged / unlogged info
   onAuthStateChanged = () => {
     const bindThis = this;
     firebase.auth.onAuthStateChanged(user => {
@@ -84,6 +85,7 @@ export default class App extends Component {
     });
   };
 
+  // create submenus
   createMenu = event => {
     if (event) {
       event.preventDefault();
@@ -109,13 +111,15 @@ export default class App extends Component {
     });
   };
 
+  // Called when adding an item via the form
   saveMenuItem = event => {
     event.preventDefault();
     const id = this.state.uid;
+    const me = this;
     const data = {
       name: this.state.name,
-      ing: this.state.ing,
-      desc: this.state.desc,
+      ingredients: this.state.ing,
+      description: this.state.desc,
       price: this.state.price,
       note: this.state.note,
       itemSubmenu: this.state.itemSubmenu
@@ -123,8 +127,12 @@ export default class App extends Component {
     console.log(`MENU ITEM ID:`, id)
     console.log(`MENU ITEM DATA`, data)
     API.update(id, data)
+      .then(function(item) {
+        me.onAuthStateChanged();
+      })
   };
 
+  // Generic input field modifier -> state
   handleChange = event => {
     let { name, value } = event.target;
     this.setState({
@@ -133,6 +141,7 @@ export default class App extends Component {
     // console.log(name, value);
   };
 
+  // When clicking the nav menu, sets currentModal to pull the appropriate modal
   menuClick = event => {
     const { name } = event.target
     // console.log(name);
@@ -142,6 +151,7 @@ export default class App extends Component {
     });
   };
 
+  // Unused thusfar --template temporary
   saveMenu = event => {
     event.preventDefault();
     let { id } = event.target;
@@ -168,6 +178,7 @@ export default class App extends Component {
     API.save(data).then(() => { this.loadMenus() });
   };
 
+  // Called when user submits the login modal
   handleSignIn(event) {
     event.preventDefault();
     console.log("signing in: " + this.state.email);
@@ -186,6 +197,7 @@ export default class App extends Component {
       });
   };
 
+  //Called when the user submits the sign up modal
   handleSignUp(event) {
     event.preventDefault();
     console.log("signing up: " + this.state.email);
@@ -196,6 +208,7 @@ export default class App extends Component {
           status: "",
           submenus: "Appetizers, Entrées, Dessert"
         });
+        // Sets the submenu state to three default menus upon creation and adds default menus to each user
         this.createMenu();
         this.handleCloseModal();
       })
@@ -207,6 +220,7 @@ export default class App extends Component {
       });
   };
 
+  //Called when clicking the sign out button. 
   handleSignOut(event) {
     event.preventDefault();
     console.log("signing out");
@@ -282,6 +296,7 @@ export default class App extends Component {
                     />
 
                   </Column>
+                  
                   <Column size="6">
                     <Menu
                       menu={this.state.menu}

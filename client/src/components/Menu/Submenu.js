@@ -26,6 +26,7 @@ const Submenu = props => {
                                 description={item.description}
                                 price={item.price}
                                 note={item.note}
+                                active={props.active}
                             />
                         ) : null))
                     ) : null
