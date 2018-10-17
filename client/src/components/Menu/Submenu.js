@@ -19,6 +19,7 @@ const Submenu = props => {
                 {props.menu.items ?
                     (props.menu.items.map((item, i) => (
                         (item.itemSubmenu) ? (
+                            item.active === props.active ? (
                             <Item
                                 key={i}
                                 name={item.name}
@@ -26,8 +27,9 @@ const Submenu = props => {
                                 description={item.description}
                                 price={item.price}
                                 note={item.note}
-                                active={props.active}
+                                active={item.active}
                             />
+                        ) : null
                         ) : null))
                     ) : null
                 }

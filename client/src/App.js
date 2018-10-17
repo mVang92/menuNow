@@ -126,7 +126,8 @@ export default class App extends Component {
       description: this.state.desc,
       price: this.state.price,
       note: this.state.note,
-      itemSubmenu: this.state.itemSubmenu
+      itemSubmenu: this.state.itemSubmenu,
+      active: true
     };
     console.log(`MENU ITEM ID:`, id)
     console.log(`MENU ITEM DATA`, data)

@@ -13,7 +13,7 @@ const menuSchema = new Schema({
     description: { type: String },
     price: { type: String },
     note: { type: String },
-    active: { type: String }
+    active: { type: Boolean }
   }],
   dateCreated: { type: Date, default: Date.now }
 });
