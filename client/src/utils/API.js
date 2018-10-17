@@ -39,7 +39,9 @@ export default {
     console.log(id)
     console.log(data)
     console.log(`I'm inside the update route on utils/API.js`);
-    axios.put(`/api/menu/${id}`, data)
+    return (
+      axios.put(`/api/menu/${id}`, data)
+    )
   },
   delete: id => axios.delete(`/api/item/${id}`)
 };
