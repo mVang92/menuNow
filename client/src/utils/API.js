@@ -43,12 +43,12 @@ export default {
       axios.put(`/api/menu/${id}`, data)
     )
   },
-  changeStatus: (id, data) => {
+  updateStatus: (id, data) => {
     console.log(id)
     console.log(data)
     console.log(`I'm inside the changeStatus route on utils/API.js`);
     return (
-      axios.put(`/api/menu/${id}`, data)
+      axios.put(`/api/menu/status/${id}`, data)
     )
   },
   delete: id => axios.delete(`/api/item/${id}`)

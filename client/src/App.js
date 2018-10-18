@@ -141,14 +141,19 @@ export default class App extends Component {
     event.preventDefault();
     const id = this.state.uid;
     const me = this;
-    console.log(event);
-    // const data = {
-    //   status: !this.state.active,
-    // };
-    // API.update(id, data)
-    //   .then(function (item) {
-    //     me.onAuthStateChanged();
-    //   });
+    console.log(event.target);
+    let activeStatus = document.querySelectorAll('[data-active]')[0].dataset.active;
+    let name = document.querySelectorAll('[data-name]')[0].dataset.name
+    activeStatus === "false" ? (activeStatus = false) : (activeStatus = true);
+    console.log(activeStatus)
+    const data = {
+      active: activeStatus,
+      name: name
+    };
+    API.updateStatus(id, data)
+      .then(function () {
+        me.onAuthStateChanged();
+      });
     this.componentWillMount();
   };
   // Generic input field modifier -> state
@@ -319,12 +324,14 @@ export default class App extends Component {
                     <Menu
                       menu={this.state.menu}
                       active={true}
+                      onClick={this.updateStatus}
                     />
                   </Column>
                   <Column size="6">
                     <Menu
                       menu={this.state.menu}
                       active={false}
+                      onClick={this.updateStatus}
                     />
                   </Column>
                 </Row>

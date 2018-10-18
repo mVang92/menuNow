@@ -34,12 +34,23 @@ module.exports = {
   },
   changeStatus: function(req, res) {
     console.log('here inside of the changeStatus function')
+    console.log(`REQ BODY::::::::::::::::::`, req.body)
+
+    console.log(req.params.id);
+    console.log(req.body.name);
     db.Menu
       .findOneAndUpdate( 
-        {creator: req.params.id}, {status: req.body}
+        {"creator" : req.params.id,  "items.name" : req.body.name} , {$set: {"description" : "xxxxxxxxx"}},(err,doc)=>{
+          if (err){
+            console.log("error:");
+            console.log(err)
+          }
+          console.log("success:");
+          console.log(doc)
+        }
       )
       .then(dbModel => {
-        console.log("DB MODEL", dbModel)
+        //console.log("DB MODEL", dbModel)
         res.json(dbModel)
       })
       .catch(err => res.status(422).json(err));

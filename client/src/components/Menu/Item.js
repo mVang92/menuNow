@@ -5,6 +5,7 @@ import Column from "./../../Column";
 const Item = props => {
     return (
         <div id="items">
+        {console.log(props)}
             <Row>
                 {/* If props.settingForAdminView 
             load all props for item
@@ -50,11 +51,11 @@ const Item = props => {
             <Row>
                 {props.active ? (
                     <Column size="12">
-                        <button type="button" data-active="false" className="ml-0 btn btn-sm btn-block btn-primary">Drop</button>
+                        <button type="button" data-active="false" data-name={props.name} onClick={props.onClick} className="ml-0 btn btn-sm btn-block btn-primary">Drop</button>
                     </Column>
                 ) : (
                         <Column size="12">
-                            <button type="button" data-active="true" className="ml-0 mkActive btn btn-sm btn-block btn-success">Add</button>
+                            <button type="button" data-active="true" onClick={props.onClick} className="ml-0 mkActive btn btn-sm btn-block btn-success">Add</button>
                         </Column>)
                 }
 

@@ -28,6 +28,7 @@ const Submenu = props => {
                                 price={item.price}
                                 note={item.note}
                                 active={item.active}
+                                onClick={props.onClick}
                             />
                         ) : null
                         ) : null))
