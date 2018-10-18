@@ -7,8 +7,7 @@ import Column from "./Column";
 import API from "./utils/API";
 import ModalConductor from "./components/Modal/Modalconductor";
 import Menu from "./components/Menu/Menu";
-import Submenu from "./components/Menu/Submenu";
-import Item from "./components/Menu/Item";
+import NotLoggedIn from "./components/Menu/NotLoggedIn";
 import { Input, FormBtn, Textarea } from "./components/Form";
 import { firebase, auth } from "./firebase"
 import "./index.css";
@@ -33,7 +32,8 @@ export default class App extends Component {
       note: "",
       itemSubmenu: "",
       // User Authentication
-      status: "",
+      message: "",
+      view: "admin",
       email: "",
       password: ""
     };
@@ -43,6 +43,7 @@ export default class App extends Component {
     this.handleSignIn = this.handleSignIn.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
+    this.checkBoxModal = this.checkBoxModal.bind(this);
   };
 
   componentWillMount() {
@@ -55,46 +56,62 @@ export default class App extends Component {
       price: "",
       desc: "",
       ing: "",
-      note: ""
+      note: "",
+      itemSubmenu: ""
     });
   };
 
+  //opens modal
   handleOpenModal() {
     this.setState({ showModal: true });
   };
 
+  //closes modal
   handleCloseModal() {
     this.setState({ showModal: false });
   };
 
+  checkBoxModal() {
+    if (document.getElementById("viewCheck").checked) {
+      this.setState({ view: "client"});
+    } else {
+      this.setState({ view: "admin"});
+    };
+  };
+
+  // setting relevant logged / unlogged info
   onAuthStateChanged = () => {
     const bindThis = this;
     firebase.auth.onAuthStateChanged(user => {
       if (user) {
         console.log(user.uid);
         bindThis.setState({ loggedin: true });
-        var userName = document.createTextNode(user.email);
-        document.getElementById("user").appendChild(userName);
+        let userName = document.createTextNode(user.email);
+        document.getElementById("email").innerHTML = "";
+        document.getElementById("email").appendChild(userName);
         const id = user.uid;
         //need to call API.getMenu or something like that or a function that does the same (loadMenus?) while passing in user.uid as the required param to search the db for
-        API.getMenu(id).then(res => { this.setState({ menu: res.data, uid: user.uid }) })
+        API.getMenu(id).then(res => { this.setState({ menu: res.data, uid: user.uid }) }
+        )
+
       } else {
         console.log("Please sign-in or sign-up.");
       };
     });
   };
 
+  // create submenus
   createMenu = event => {
     if (event) {
       event.preventDefault();
     };
-
     let splitSubmenus = this.state.submenus.split(",");
+    const bindThis = this;
+    this.setState({ submenus: "" });
     // Cleans any extra padding around items
     for (let i = 0; i < splitSubmenus.length; i++) {
       splitSubmenus[i] = splitSubmenus[i].trim();
     };
-
     console.log(splitSubmenus);
     firebase.auth.onAuthStateChanged(function (user) {
       if (user) {
@@ -102,6 +119,7 @@ export default class App extends Component {
           .then(function (menu) {
             console.log(menu);
             console.log("created a menu!!!");
+            bindThis.componentWillMount();
           });
       } else {
         // No user is signed in.
@@ -109,30 +127,47 @@ export default class App extends Component {
     });
   };
 
+  // Called when adding an item via the form
   saveMenuItem = event => {
     event.preventDefault();
     const id = this.state.uid;
+    const me = this;
     const data = {
       name: this.state.name,
-      ing: this.state.ing,
-      desc: this.state.desc,
+      ingredients: this.state.ing,
+      description: this.state.desc,
       price: this.state.price,
       note: this.state.note,
-      itemSubmenu: this.state.itemSubmenu
+      itemSubmenu: this.state.itemSubmenu,
+      active: true
+    };
+
+    if (data.itemSubmenu === "") {
+      data.itemSubmenu = this.state.menu.submenu[0];
     };
     console.log(`MENU ITEM ID:`, id)
     console.log(`MENU ITEM DATA`, data)
     API.update(id, data)
+      .then(function (item) {
+        me.onAuthStateChanged();
+      });
+    this.componentWillMount();
   };
 
+  // Generic input field modifier -> state
   handleChange = event => {
     let { name, value } = event.target;
     this.setState({
       [name]: value,
-    })
+    });
     // console.log(name, value);
   };
 
+  handleSelectChange = event => {
+    this.setState({ itemSubmenu: event.target.value })
+  };
+
+  // When clicking the nav menu, sets currentModal to pull the appropriate modal
   menuClick = event => {
     const { name } = event.target
     // console.log(name);
@@ -142,78 +177,63 @@ export default class App extends Component {
     });
   };
 
-  saveMenu = event => {
-    event.preventDefault();
-    let { id } = event.target;
-    let selectedArticle = this.state.articles.filter(article => id === article._id);
-    // Remove the selected Article from the current Articles state (to remove it from the list)
-
-    for (var i = 0; i < this.state.articles.length - 1; i++) {
-      if (this.state.articles[i]._id === id) {
-        this.state.articles.splice(i, 1);
-        console.log("removed from searched list");
-      };
-    };
-
-    const data = {
-      key: selectedArticle[0]._id,
-      url: selectedArticle[0].web_url,
-      headline: selectedArticle[0].headline.main,
-      snippet: selectedArticle[0].snippet,
-      author: (selectedArticle[0].byline ? selectedArticle[0].byline.original : "No author documented"),
-      note: this.state.note
-    };
-
-    console.log(data);
-    API.save(data).then(() => { this.loadMenus() });
-  };
-
+  // Called when user submits the login modal
   handleSignIn(event) {
     event.preventDefault();
-    console.log("signing in: " + this.state.email);
     auth
       .doSignInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
-        this.setState({ loggedin: true });
-        this.setState({ status: "" });
+        console.log("signing in: " + this.state.email);
+        this.setState({
+          loggedin: true,
+          message: ""
+        });
         this.handleCloseModal();
       })
       .catch(error => {
-        this.setState({ status: error.message })
-        var error = document.createTextNode(this.state.status);
+        this.setState({ message: error.message })
+        const message = document.createTextNode(this.state.message);
         document.getElementById("error").innerHTML = "";
-        document.getElementById("error").appendChild(error);
+        document.getElementById("error").appendChild(message);
       });
   };
 
+  //Called when the user submits the sign up modal
   handleSignUp(event) {
     event.preventDefault();
-    console.log("signing up: " + this.state.email);
-    auth.doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
+    auth
+      .doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
+        console.log("signing up: " + this.state.email);
         this.setState({
           loggedin: true,
-          status: "",
+          message: "",
           submenus: "Appetizers, Entrées, Dessert"
         });
+        // Sets the submenu state to three default menus upon creation and adds default menus to each user
         this.createMenu();
         this.handleCloseModal();
       })
       .catch(error => {
-        this.setState({ status: error.message })
-        var error = document.createTextNode(this.state.status);
+        this.setState({ message: error.message })
+        const message = document.createTextNode(this.state.message);
         document.getElementById("error").innerHTML = "";
-        document.getElementById("error").appendChild(error);
+        document.getElementById("error").appendChild(message);
       });
   };
 
+  //Called when clicking the sign out button. 
   handleSignOut(event) {
     event.preventDefault();
     console.log("signing out");
     auth
       .doSignOut()
       .then(() => {
-        this.setState({ loggedin: false });
+        this.setState({
+          loggedin: false,
+          email: "",
+          password: ""
+        });
       });
   };
 
@@ -231,7 +251,7 @@ export default class App extends Component {
           {/* if State.loggedin load menu portion else display home page stuff */}
           {this.state.loggedin === true ? (
             <div className="box">
-              <p id="user" className="text-center">Welcome, </p>
+              <p id="user" className="text-center">Welcome, <span id="email"></span></p>
               <Row>
                 <Column size="12">
                   {/* onSubmit on in form for testing. Remove when we figure how to use it in nav */}
@@ -260,7 +280,19 @@ export default class App extends Component {
                     </div>
                     <div className="form-row">
                       <div className="form-group col-md-4">
-                        <Input type="text" placeholder="Which submenu does this belong?" onChange={this.handleChange} value={this.state.itemSubmenu} name="itemSubmenu" />
+
+                        <select id="itemSubmenu" className="custom-select custom-select-lg" value={this.state.itemSubmenu} onChange={this.handleSelectChange}>
+                          {this.state.menu ? (
+                            this.state.menu.submenu ? (
+                              this.state.menu.submenu.map(sub => (
+                                <option key={sub.toString()} name={this.state.itemSubmenu} value={sub}>{sub}</option>
+                              ))) : null)
+                            : null
+                          }
+
+                        </select>
+
+                        {/* <Input type="text" placeholder="Which submenu does this belong?" onChange={this.handleChange} value={this.state.itemSubmenu} name="itemSubmenu" /> */}
                       </div>
                       <div className="form-group col-md-4">
                         <Textarea type="text" placeholder="Add a note about this item" onChange={this.handleChange} value={this.state.note} name="note" />
@@ -273,29 +305,41 @@ export default class App extends Component {
                   </form>
                 </Column>
               </Row>
-              <div className="form">
-                <Row>
-                  <Column size="6">
-                    <Menu
-                      menu={this.state.menu}
-                      active={true}
-                    />
-
-                  </Column>
-                  <Column size="6">
-                    <Menu
-                      menu={this.state.menu}
-                      active={false}
-                    />
-
-                  </Column>
-                </Row>
-              </div>
+              {this.state.view === "admin" ? (
+                <div className="form">
+                  <Row>
+                    <Column size="6">
+                      <Menu
+                        menu={this.state.menu}
+                        active={true}
+                      />
+                    </Column>
+                    <Column size="6">
+                      <Menu
+                        menu={this.state.menu}
+                        active={false}
+                      />
+                    </Column>
+                  </Row>
+                </div>
+              ) : (
+                  <div className="form">
+                    <Row>
+                      <Column size="12">
+                        <Menu
+                          menu={this.state.menu}
+                          active={true}
+                        />
+                      </Column>
+                    </Row>
+                  </div>
+                )
+              }
             </div>
           ) : (
               <div>
                 {/* Else statement for state.loggedin goes here */}
-                <h3 className="text-center">The Not Logged In Section Will Go Here</h3>
+                <NotLoggedIn />
               </div>
             )
           }
@@ -308,6 +352,8 @@ export default class App extends Component {
             handleSignOut={this.handleSignOut}
             handleSignUp={this.handleSignUp}
             handleChange={this.handleChange}
+            checkBoxModal={this.checkBoxModal}
+            view={this.state.view}
           />
         </Container>
       </div >

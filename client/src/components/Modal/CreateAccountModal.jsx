@@ -1,8 +1,8 @@
 import React from "react";
 import ReactModal from "react-modal";
 
-const CreateAccount = props => {
-    // console.log(props)
+const SignUp = props => {
+
     return (
         <ReactModal
             isOpen={props.showModal}
@@ -15,7 +15,7 @@ const CreateAccount = props => {
                 <div className="modal-body">
                     <form className="modalBody" onSubmit={props.handleSignUp}>
                         <div className="modal-header">
-                            Sign-Up for a New Account
+                            <strong>Sign-Up for a New Account</strong>
                         </div>
                         <div className="modal-body text-center">
                             <input type="text" value={props.email} name="email" onChange={props.handleChange} placeholder="Email"></input>
@@ -23,8 +23,7 @@ const CreateAccount = props => {
                             <br></br>
                             <input type="password" value={props.password} name="password" onChange={props.handleChange} placeholder="Password"></input>
                             <div className="row">
-                                <div id="error" className="col-12 text-danger">
-                                </div>
+                                <div id="error" className="col-12 text-danger"></div>
                             </div>
                         </div>
                         <div className="modal-footer">
@@ -38,4 +37,4 @@ const CreateAccount = props => {
     );
 };
 
-export default CreateAccount;
+export default SignUp;

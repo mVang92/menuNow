@@ -1,7 +1,7 @@
-import React from 'react';
-import Row from './../../Row';
-import Column from './../../Column';
-import './Menu.css';
+import React from "react";
+import Row from "./../../Row";
+import Column from "./../../Column";
+import "./Menu.css";
 import Submenu from "./Submenu";
 
 const Menu = props => {
@@ -22,10 +22,15 @@ const Menu = props => {
                 </Row>
 
                 {/* This Row will fill with the submenu. */}
+                {props.menu ? (
                     <Submenu
                         menu={props.menu}
+                        active={props.active}
                     // pass in submenu title and submenu items as props
                     />
+                ) : null
+                }
+
             </Column>
 
         </Row>
