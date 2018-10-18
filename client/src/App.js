@@ -33,6 +33,7 @@ export default class App extends Component {
       itemSubmenu: "",
       // User Authentication
       message: "",
+      view: "admin",
       email: "",
       password: ""
     };
@@ -42,6 +43,7 @@ export default class App extends Component {
     this.handleSignIn = this.handleSignIn.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
+    this.checkBoxModal = this.checkBoxModal.bind(this);
   };
 
   componentWillMount() {
@@ -69,6 +71,14 @@ export default class App extends Component {
     this.setState({ showModal: false });
   };
 
+  checkBoxModal() {
+    if (document.getElementById("viewCheck").checked) {
+      this.setState({ view: "client"});
+    } else {
+      this.setState({ view: "admin"});
+    };
+  };
+
   // setting relevant logged / unlogged info
   onAuthStateChanged = () => {
     const bindThis = this;
@@ -81,7 +91,9 @@ export default class App extends Component {
         document.getElementById("email").appendChild(userName);
         const id = user.uid;
         //need to call API.getMenu or something like that or a function that does the same (loadMenus?) while passing in user.uid as the required param to search the db for
-        API.getMenu(id).then(res => { this.setState({ menu: res.data, uid: user.uid }) })
+        API.getMenu(id).then(res => { this.setState({ menu: res.data, uid: user.uid }) }
+        )
+
       } else {
         console.log("Please sign-in or sign-up.");
       };
@@ -129,6 +141,10 @@ export default class App extends Component {
       itemSubmenu: this.state.itemSubmenu,
       active: true
     };
+
+    if (data.itemSubmenu === "") {
+      data.itemSubmenu = this.state.menu.submenu[0];
+    };
     console.log(`MENU ITEM ID:`, id)
     console.log(`MENU ITEM DATA`, data)
     API.update(id, data)
@@ -147,6 +163,10 @@ export default class App extends Component {
     // console.log(name, value);
   };
 
+  handleSelectChange = event => {
+    this.setState({ itemSubmenu: event.target.value })
+  };
+
   // When clicking the nav menu, sets currentModal to pull the appropriate modal
   menuClick = event => {
     const { name } = event.target
@@ -155,33 +175,6 @@ export default class App extends Component {
       currentModal: name,
       showModal: true
     });
-  };
-
-  // Unused thusfar --template temporary
-  saveMenu = event => {
-    event.preventDefault();
-    let { id } = event.target;
-    let selectedArticle = this.state.articles.filter(article => id === article._id);
-    // Remove the selected Article from the current Articles state (to remove it from the list)
-
-    for (let i = 0; i < this.state.articles.length - 1; i++) {
-      if (this.state.articles[i]._id === id) {
-        this.state.articles.splice(i, 1);
-        console.log("removed from searched list");
-      };
-    };
-
-    const data = {
-      key: selectedArticle[0]._id,
-      url: selectedArticle[0].web_url,
-      headline: selectedArticle[0].headline.main,
-      snippet: selectedArticle[0].snippet,
-      author: (selectedArticle[0].byline ? selectedArticle[0].byline.original : "No author documented"),
-      note: this.state.note
-    };
-
-    console.log(data);
-    API.save(data).then(() => { this.loadMenus() });
   };
 
   // Called when user submits the login modal
@@ -287,7 +280,19 @@ export default class App extends Component {
                     </div>
                     <div className="form-row">
                       <div className="form-group col-md-4">
-                        <Input type="text" placeholder="Which submenu does this belong?" onChange={this.handleChange} value={this.state.itemSubmenu} name="itemSubmenu" />
+
+                        <select id="itemSubmenu" className="custom-select custom-select-lg" value={this.state.itemSubmenu} onChange={this.handleSelectChange}>
+                          {this.state.menu ? (
+                            this.state.menu.submenu ? (
+                              this.state.menu.submenu.map(sub => (
+                                <option key={sub.toString()} name={this.state.itemSubmenu} value={sub}>{sub}</option>
+                              ))) : null)
+                            : null
+                          }
+
+                        </select>
+
+                        {/* <Input type="text" placeholder="Which submenu does this belong?" onChange={this.handleChange} value={this.state.itemSubmenu} name="itemSubmenu" /> */}
                       </div>
                       <div className="form-group col-md-4">
                         <Textarea type="text" placeholder="Add a note about this item" onChange={this.handleChange} value={this.state.note} name="note" />
@@ -300,29 +305,41 @@ export default class App extends Component {
                   </form>
                 </Column>
               </Row>
-              <div className="form">
-                <Row>
-                  <Column size="6">
-                    <Menu
-                      menu={this.state.menu}
-                      active={true}
-                    />
-                  </Column>
-                  <Column size="6">
-                    <Menu
-                      menu={this.state.menu}
-                      active={false}
-                    />
-                  </Column>
-                </Row>
-              </div>
+              {this.state.view === "admin" ? (
+                <div className="form">
+                  <Row>
+                    <Column size="6">
+                      <Menu
+                        menu={this.state.menu}
+                        active={true}
+                      />
+                    </Column>
+                    <Column size="6">
+                      <Menu
+                        menu={this.state.menu}
+                        active={false}
+                      />
+                    </Column>
+                  </Row>
+                </div>
+              ) : (
+                  <div className="form">
+                    <Row>
+                      <Column size="12">
+                        <Menu
+                          menu={this.state.menu}
+                          active={true}
+                        />
+                      </Column>
+                    </Row>
+                  </div>
+                )
+              }
             </div>
           ) : (
               <div>
                 {/* Else statement for state.loggedin goes here */}
-                <NotLoggedIn>
-                  
-                </NotLoggedIn>
+                <NotLoggedIn />
               </div>
             )
           }
@@ -335,6 +352,8 @@ export default class App extends Component {
             handleSignOut={this.handleSignOut}
             handleSignUp={this.handleSignUp}
             handleChange={this.handleChange}
+            checkBoxModal={this.checkBoxModal}
+            view={this.state.view}
           />
         </Container>
       </div >

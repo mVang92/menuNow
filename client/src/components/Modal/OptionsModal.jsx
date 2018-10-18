@@ -44,7 +44,10 @@ const SignIn = props => {
                                     </div>
                                 </div>
                                 <div className="col-2 form-group">
-                                    <input type="checkbox" id="gridCheck" disabled />
+                                    {props.view === "admin" ? <input type="checkbox" id="viewCheck" onClick={props.checkBoxModal} />
+                                        :
+                                        <input type="checkbox" id="viewCheck" checked onClick={props.checkBoxModal} />
+                                    }
                                 </div>
                             </div>
                             <div className="row">
