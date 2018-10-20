@@ -13,4 +13,7 @@ router
   .put(menuController.update)
   .delete(menuController.remove);
   
+router 
+  .route("/status/:id")
+  .put(menuController.changeStatus)
 module.exports = router;

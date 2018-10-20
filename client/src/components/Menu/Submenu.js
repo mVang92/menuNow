@@ -21,8 +21,6 @@ const Submenu = props => {
                                 </Column>
                                     
                                 {/* Items Column */}
-                                {console.log(menu)}
-                                {console.log(props)}
                                 <Column size="12">
                                     {props.menu.items ?
                                         (props.menu.items.map((item, i) => (
@@ -36,6 +34,8 @@ const Submenu = props => {
                                                         price={item.price}
                                                         note={item.note}
                                                         active={item.active}
+                                                        updateStatus={props.updateStatus}
+                                                        view={props.view}
                                                     />
                                                 ) : null
                                             ) : null))
@@ -47,7 +47,6 @@ const Submenu = props => {
                         ))) : null}
                 </div>
             </Column>
-
 
         </Row>
     );
