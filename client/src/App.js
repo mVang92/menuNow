@@ -44,6 +44,7 @@ export default class App extends Component {
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
     this.checkBoxModal = this.checkBoxModal.bind(this);
+    this.updateStatus = this.updateStatus.bind(this);
   };
 
   componentWillMount() {
@@ -84,7 +85,7 @@ export default class App extends Component {
     const bindThis = this;
     firebase.auth.onAuthStateChanged(user => {
       if (user) {
-        console.log(user.uid);
+        // console.log(user.uid);
         bindThis.setState({ loggedin: true });
         let userName = document.createTextNode(user.email);
         document.getElementById("email").innerHTML = "";
@@ -92,7 +93,7 @@ export default class App extends Component {
         const id = user.uid;
         //need to call API.getMenu or something like that or a function that does the same (loadMenus?) while passing in user.uid as the required param to search the db for
         API.getMenu(id).then(res => { this.setState({ menu: res.data, uid: user.uid }) }
-        )
+        );
 
       } else {
         console.log("Please sign-in or sign-up.");
@@ -112,13 +113,13 @@ export default class App extends Component {
     for (let i = 0; i < splitSubmenus.length; i++) {
       splitSubmenus[i] = splitSubmenus[i].trim();
     };
-    console.log(splitSubmenus);
+    // console.log(splitSubmenus);
     firebase.auth.onAuthStateChanged(function (user) {
       if (user) {
         API.createMenu(user.uid, splitSubmenus)
           .then(function (menu) {
-            console.log(menu);
-            console.log("created a menu!!!");
+            // console.log(menu);
+            // console.log("created a menu!!!");
             bindThis.componentWillMount();
           });
       } else {
@@ -145,10 +146,31 @@ export default class App extends Component {
     if (data.itemSubmenu === "") {
       data.itemSubmenu = this.state.menu.submenu[0];
     };
-    console.log(`MENU ITEM ID:`, id)
-    console.log(`MENU ITEM DATA`, data)
+    // console.log(`MENU ITEM ID:`, id)
+    // console.log(`MENU ITEM DATA`, data)
     API.update(id, data)
       .then(function (item) {
+        me.onAuthStateChanged();
+      });
+    this.componentWillMount();
+  };
+
+  // Updates active or inactive status
+  updateStatus = event => {
+    event.preventDefault();
+    const id = this.state.uid;
+    const me = this;
+    // console.log(event.target);
+    let activeStatus = event.target.getAttribute("data-active");
+    let name = event.target.getAttribute("data-name");
+    activeStatus === "false" ? (activeStatus = false) : (activeStatus = true);
+    // console.log(activeStatus)
+    const data = {
+      active: activeStatus,
+      name: name
+    };
+    API.updateStatus(id, data)
+      .then(function () {
         me.onAuthStateChanged();
       });
     this.componentWillMount();
@@ -163,6 +185,7 @@ export default class App extends Component {
     // console.log(name, value);
   };
 
+  //quick and dirty lazy fix for setting itemSubmenu
   handleSelectChange = event => {
     this.setState({ itemSubmenu: event.target.value })
   };
@@ -183,7 +206,7 @@ export default class App extends Component {
     auth
       .doSignInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
-        console.log("signing in: " + this.state.email);
+        // console.log("signing in: " + this.state.email);
         this.setState({
           loggedin: true,
           message: ""
@@ -191,7 +214,7 @@ export default class App extends Component {
         this.handleCloseModal();
       })
       .catch(error => {
-        this.setState({ message: error.message })
+        this.setState({ message: error.message });
         const message = document.createTextNode(this.state.message);
         document.getElementById("error").innerHTML = "";
         document.getElementById("error").appendChild(message);
@@ -204,7 +227,7 @@ export default class App extends Component {
     auth
       .doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
-        console.log("signing up: " + this.state.email);
+        // console.log("signing up: " + this.state.email);
         this.setState({
           loggedin: true,
           message: "",
@@ -225,7 +248,7 @@ export default class App extends Component {
   //Called when clicking the sign out button. 
   handleSignOut(event) {
     event.preventDefault();
-    console.log("signing out");
+    // console.log("signing out");
     auth
       .doSignOut()
       .then(() => {
@@ -305,6 +328,7 @@ export default class App extends Component {
                   </form>
                 </Column>
               </Row>
+              {/* default or admin view */}
               {this.state.view === "admin" ? (
                 <div className="form">
                   <Row>
@@ -312,23 +336,30 @@ export default class App extends Component {
                       <Menu
                         menu={this.state.menu}
                         active={true}
+                        updateStatus={this.updateStatus}
+                        view={this.state.view}
                       />
                     </Column>
                     <Column size="6">
                       <Menu
                         menu={this.state.menu}
                         active={false}
+                        updateStatus={this.updateStatus}
+                        view={this.state.view}
                       />
                     </Column>
                   </Row>
                 </div>
               ) : (
+
+                // Client view. Doesn't need updatestatus as the buttons will be removed
                   <div className="form">
                     <Row>
                       <Column size="12">
                         <Menu
                           menu={this.state.menu}
                           active={true}
+                          view={this.state.view}
                         />
                       </Column>
                     </Row>

@@ -26,6 +26,8 @@ const Menu = props => {
                     <Submenu
                         menu={props.menu}
                         active={props.active}
+                        updateStatus={props.updateStatus}
+                        view={props.view}
                     // pass in submenu title and submenu items as props
                     />
                 ) : null
