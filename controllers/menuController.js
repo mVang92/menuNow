@@ -15,22 +15,43 @@ module.exports = {
       .catch(err => console.log(err))
   },
   create: function (req, res) {
-    console.log(req.body)
+    // console.log(req.body)
     db.Menu
       .create(req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => console.log(err));
   },
   update: function(req, res) {
-    console.log(`i'm here inside the controller update function`)
-    console.log(`REQ BODY:::::::::::::::::::`, req.body);
     db.Menu
       .findOneAndUpdate( 
         {creator: req.params.id}, {$push: {items: [req.body]}}
       )
       .then(dbModel => {
-        console.log("DB MODEL", dbModel)
+        // console.log("DB MODEL", dbModel)
         res.json(dbModel)
+      })
+      .catch(err => res.status(422).json(err));
+  },
+  changeStatus: function(req, res) {
+    // console.log('here inside of the changeStatus function')
+    // console.log(`REQ BODY::::::::::::::::::`, req.body)
+
+    // console.log(req.params.id);
+    // console.log(req.body.name);
+    db.Menu
+      .findOneAndUpdate( 
+        {"creator" : req.params.id,  "items" : { "$elemMatch": {"name" : req.body.name}}}, 
+        {"items.$.active" : req.body.active}, (err,doc)=>{
+          if (err) {
+            // console.log("error:");
+            console.log(err)
+          };
+          // console.log("success:");
+          // console.log(doc)
+        })
+      .then(dbModel => {
+        //console.log("DB MODEL", dbModel)
+        res.json(dbModel);
       })
       .catch(err => res.status(422).json(err));
   },

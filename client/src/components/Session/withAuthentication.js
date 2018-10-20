@@ -14,7 +14,7 @@ const withAuthentication = (Component) =>
         dbUser: null,
         authToken: null
       };
-    }
+    };
 
     componentDidMount() {
       firebase.auth.onAuthStateChanged(authUser => {
@@ -27,19 +27,19 @@ const withAuthentication = (Component) =>
               this.setState({
                 authUser: authUser,
                 dbUser: dbUser.data
-              })
+              });
             })
             .then(() => firebase.auth.currentUser.getIdToken())
             .then(authToken => this.setState({ authToken }))
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));
         } else {
           this.setState({
             authUser: null,
             dbUser: null
-          })
-        }
-      })
-    }
+          });
+        };
+      });
+    };
 
     requestWithAuth = (method, url, data) => {
       const { authToken } = this.state
@@ -50,16 +50,16 @@ const withAuthentication = (Component) =>
         headers: {
           "Authorization": "Bearer " + authToken
         }
-      })
-    }
+      });
+    };
 
     getWithAuth = (url) => {
-      return this.requestWithAuth("get", url, null)
-    }
+      return this.requestWithAuth("get", url, null);
+    };
 
     postWithAuth = (url, data) => {
-      return this.requestWithAuth("post", url, data)
-    }
+      return this.requestWithAuth("post", url, data);
+    };
 
     serverVerifyToken() {
       firebase.auth.currentUser.getIdToken(/* force refresh */ true)
@@ -69,25 +69,26 @@ const withAuthentication = (Component) =>
             url: "/api/secret",
             data: { idToken }
           }).then(result => {
-            console.log("result: ", result)
-          })
-        })
-    }
+            // console.log("result: ", result)
+            return;
+          });
+        });
+    };
 
     render() {
       const { authUser, dbUser } = this.state;
 
       if (authUser) {
-        authUser.dbUser = dbUser
-        authUser.requestWithAuth = this.requestWithAuth
-      }
+        authUser.dbUser = dbUser;
+        authUser.requestWithAuth = this.requestWithAuth;
+      };
 
       return (
         <AuthUserContext.Provider value={authUser}>
           <Component {...this.props} />
         </AuthUserContext.Provider>
       );
-    }
-  }
+    };
+  };
 
 export default withAuthentication;
