@@ -52,7 +52,7 @@ const SignIn = props => {
                             </div>
                             <div className="row">
                                 <div className="col-10 text-right">
-                                    <a id="site" href="#">App</a>
+                                    {/* <a id="site" href="#">App</a> */}
                                 </div>
                                 <div className="col-2 form-group"></div>
                             </div>

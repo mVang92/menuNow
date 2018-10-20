@@ -279,7 +279,7 @@ export default class App extends Component {
                 <Column size="12">
                   {/* onSubmit on in form for testing. Remove when we figure how to use it in nav */}
                   {/* ONLY IF THEY HAVEN'T ADDED A MENU */}
-                  <form className="form">
+                  {/* <form className="form">
                     <h4>Create your Menu</h4>
                     <div className="form-row">
                       <div className="form-group col-md-12">
@@ -287,7 +287,7 @@ export default class App extends Component {
                         <FormBtn onClick={this.createMenu}>Add Menu</FormBtn>
                       </div>
                     </div>
-                  </form>
+                  </form> */}
                   <form className="form">
                     <h4>Add a menu item</h4>
                     <div className="form-row">
@@ -332,7 +332,7 @@ export default class App extends Component {
               {this.state.view === "admin" ? (
                 <div className="form">
                   <Row>
-                    <Column size="6">
+                    <Column size="md-6">
                       <Menu
                         menu={this.state.menu}
                         active={true}
@@ -340,7 +340,7 @@ export default class App extends Component {
                         view={this.state.view}
                       />
                     </Column>
-                    <Column size="6">
+                    <Column size="md-6">
                       <Menu
                         menu={this.state.menu}
                         active={false}

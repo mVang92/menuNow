@@ -7,7 +7,7 @@ const NotLoggedIn = () => {
                 <div className="carousel-inner">
                     <div className="carousel-item active">
                         <p>Welcome to </p>
-                        <strong id="appName">menuNOW</strong>
+                        <strong id="appName">MenuNow</strong>
                     </div>
                     <div className="carousel-item">
                         <p>We provide restaurant business owners </p>
