@@ -14,9 +14,9 @@ const Submenu = props => {
                         props.menu.submenu.map(menu => (
                             <Row key={menu.toString()}>
                                 <Column size="12">
-                                    <u><strong><h4 className="text-center">
+                                    <strong><h4 className="text-center submenu">
                                      {menu}
-                                    </h4></strong></u>
+                                    </h4></strong>
                                    
                                 </Column>
                                     

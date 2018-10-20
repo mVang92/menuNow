@@ -11,7 +11,7 @@ const SignUp = props => {
             shouldCloseOnOverlayClick={true}
             closeTimeoutMS={150}
         >
-            <div className="modal-content border">
+            <div className="modal-content">
                 <div className="modal-body">
                     <form className="modalBody" onSubmit={props.handleSignUp}>
                         <div className="modal-header">
@@ -27,8 +27,8 @@ const SignUp = props => {
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" onClick={props.handleCloseModal} data-dismiss="modal">Close</button>
-                            <button className="btn btn-secondary" type="submit">Sign Up</button>
+                            <button type="button" className="btn btn-light" onClick={props.handleCloseModal} data-dismiss="modal">Close</button>
+                            <button className="btn btn-light" type="submit">Sign Up</button>
                         </div>
                     </form>
                 </div>

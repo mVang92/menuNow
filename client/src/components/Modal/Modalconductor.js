@@ -23,7 +23,7 @@ const ModalConductor = props => {
 
         default:
             return null;
-    };
+    }
 };
 
 export default ModalConductor;
