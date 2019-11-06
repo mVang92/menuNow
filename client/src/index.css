@@ -3,8 +3,7 @@
 } */
 
 body {
-  background: url("./images/background.jpg") no-repeat center center fixed;
-  background-size: cover;
+  background: url("./images/food.png")repeat;
   margin: 0;
   padding: 0;
   font-family: "Montserrat", sans-serif;
@@ -19,24 +18,27 @@ form {
 }
 
 .navbar {
-  background: grey !important;
-  border-bottom: 1px solid white;
+  background: #FAD083 !important;
+  box-shadow: white;
 }
 
 .ReactModal__Content {
   width: 500px;
   margin-top: 10%;
-  box-shadow: 3px 5px 15px 5px rgb(32, 32, 32);
+  /* box-shadow: 3px 5px 15px 5px rgb(32, 32, 32); */
 }
 
 .ReactModal__Overlay--after-open {
-  background: rgba(64, 64, 64, 0.7) !important;
+  background: rgba(64, 64, 64, 0.3) !important;
 }
 
 .navbar-brand {
   transition-duration: 0.5s;
-  color: lightgrey !important;
+  color: white !important;
   font-weight: initial !important;
+}
+.modal-header {
+  color: white;
 }
 
 .navbar-brand:hover {
@@ -46,7 +48,7 @@ form {
 
 .nav-link {
   transition-duration: 0.5s;
-  color: lightgrey !important;
+  color: white !important;
   font-weight: bold !important;
 }
 
@@ -55,13 +57,15 @@ form {
   color: white !important;
 }
 
-.modalBody,
 .options {
-  background: rgb(212, 212, 212);
+  background: #FAD083;
 }
 
 .modalBody {
   border-radius: 5px 5px 5px 5px;
+}
+.modal-body {
+  background: #FAD083;
 }
 
 .box {
@@ -69,9 +73,9 @@ form {
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px 5px 5px 5px;
-  background: rgba(192, 192, 192, 0.7);
-  border: 1px solid rgb(16, 16, 16);
-  box-shadow: 3px 5px 15px 5px rgb(32, 32, 32);
+  /* background: rgba(192, 192, 192, 0.7); */
+  /* border: 1px solid rgb(16, 16, 16); */
+  /* box-shadow: 3px 5px 15px 5px rgb(32, 32, 32); */
 }
 
 .border,
@@ -82,43 +86,50 @@ form {
 .border {
   border: 1px solid rgb(16, 16, 16) !important;
 }
-
-.optionBox {
-  border-radius: initial;
-  border: 1px solid rgb(255, 255, 255) !important;
+#user {
+  font-size: 2rem;
 }
-
 .form,
 #user {
   margin: 10px;
-  background: lightgrey;
+  color: white;
+  /* background: lightgrey; */
   padding: 10px;
-  border-radius: 5px 5px 5px 5px;
-  box-shadow: 1px 1px 7px 1px rgb(32, 32, 32);
+  /* border-radius: 5px 5px 5px 5px; */
+  /* box-shadow: 1px 1px 7px 1px rgb(32, 32, 32); */
 }
 
 #items {
   transition-duration: 0.4s;
-  border: 1px solid rgb(235, 235, 235);
+  /* border: 1px solid rgb(235, 235, 235); */
   border-radius: 5px 5px 5px 5px;
   margin: 5px;
-  padding: 5px;
-  background: rgb(235, 235, 235);
+  padding: 25px;
+  background: #FAD083;
 }
-
+.itemTitle {
+  font-size: 1.3rem;
+}
+.submenu {
+  border-bottom: 1px solid white;
+}
+.btn-light {
+  max-width: 100px;
+  margin-top: 20px;
+}
 #items:hover {
   transition-duration: 0.1s;
-  border: 1px solid black;
+  box-shadow: 5px 5px 20px 5px rgba(255, 255, 255, 0.2);
 }
 
 #notLoggedIn {
   transition-duration: 0.5s;
   margin: auto;
   font-size: 36px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-radius: 5px 5px 5px 5px;
-  background: rgba(212, 212, 212, 0.6);
-  box-shadow: 3px 5px 15px 5px rgb(32, 32, 32);
+  /* background: rgba(212, 212, 212, 0.6); */
+  /* box-shadow: 3px 5px 15px 5px rgb(32, 32, 32); */
   margin-top: 5%;
   height: 400px;
   width: 90%;
@@ -127,15 +138,11 @@ form {
 .carousel-inner {
   text-align: center;
   color: white;
-  text-shadow: 2px 2px 8px black;
 }
 
 .carousel-inner {
   height: 200px;
   top: 100px;
-  background: grey;
-  border-top: 1px solid white;
-  border-bottom: 1px solid white;
 }
 
 #site:hover {

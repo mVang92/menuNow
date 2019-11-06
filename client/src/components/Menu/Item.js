@@ -14,12 +14,12 @@ const Item = props => {
             */}
 
 
-                    <Column size="10">
-                        <strong>{props.name}</strong>
+                    <Column size="9">
+                        <p className="itemTitle"><strong>{props.name}</strong></p>
                     </Column>
 
-                    <Column size="2">
-                        <strong>${props.price}</strong>
+                    <Column size="3">
+                        <p className="itemTitle"><strong>${props.price}</strong></p>
                     </Column>
                 </Row>
                 <Row>
@@ -52,11 +52,11 @@ const Item = props => {
                 <Row>
                     {props.active ? (
                         <Column size="12">
-                            <button type="button" data-active="false" data-name={props.name} onClick={props.updateStatus} className="ml-0 btn btn-sm btn-block btn-primary">Drop</button>
+                            <button type="button" data-active="false" data-name={props.name} onClick={props.updateStatus} className="ml-0 btn btn-sm btn-block btn-light">Drop</button>
                         </Column>
                     ) : (
                             <Column size="12">
-                                <button type="button" data-active="true" data-name={props.name} onClick={props.updateStatus} className="ml-0 btn btn-sm btn-block btn-success">Add</button>
+                                <button type="button" data-active="true" data-name={props.name} onClick={props.updateStatus} className="ml-0 btn btn-sm btn-block btn-light">Add</button>
                             </Column>)
                     }
 
